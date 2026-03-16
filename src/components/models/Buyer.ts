@@ -1,14 +1,12 @@
 import { IBuyer, TPayment } from "../../types/index.ts";
 
-export class Buyer implements IBuyer {
-    payment!: TPayment | null;
-    email: string = '';
-    phone: string = '';
-    address: string = '';
+export class Buyer {
+    protected payment: TPayment | null = null;
+    protected email: string = '';
+    protected phone: string = '';
+    protected address: string = '';
 
-    constructor(data: IBuyer) {
-        Object.assign(this, data);
-    }
+    constructor() {}
 
     saveData(data: Partial<IBuyer>): void {
         Object.assign(this, data);
@@ -31,39 +29,22 @@ export class Buyer implements IBuyer {
     }
 
     validate(): {} {
-        const validator: {status: string, errors: string[]} = {
-            status: 'error',
-            errors: [],
-        };
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const phoneRegex = /^\+?[0-9]{7,15}$/;
+        const validator: {[key: string]: string} = {};
 
         if (!this.payment) {
-            validator.errors.push("Не выбран вид оплаты");
-        }
-
-        if (!emailRegex.test(this.email)) {
-            validator.errors.push("Некорректный email");
+            validator.payment = "Не выбран вид оплаты";
         }
 
         if (!this.email) {
-            validator.errors.push("Укажите email");
-        }
-
-        if (!phoneRegex.test(this.phone)) {
-            validator.errors.push("Некорректный номер телефона");
+            validator.email = "Укажите email";
         }
 
         if (!this.phone) {
-            validator.errors.push("Укажите номер телефона");
+            validator.phone = "Укажите номер телефона";
         }
 
         if (!this.address) {
-            validator.errors.push("Укажите адрес доставки");
-        }
-
-        if (validator.errors.length === 0) {
-            validator.status = 'success';
+            validator.address = "Укажите адрес доставки";
         }
 
         return validator;

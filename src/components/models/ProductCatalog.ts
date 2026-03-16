@@ -1,20 +1,17 @@
 import { IProduct } from "../../types/index.ts";
 
 export class ProductCatalog {
-    protected products: IProduct[];
-    protected _previewCard: IProduct | null;
+    protected products: IProduct[] = [];
+    protected previewCard: IProduct | null = null;
 
-    constructor(products: IProduct[], previewCard: IProduct | null = null) {
-        this.products = products;
-        this._previewCard = previewCard;
+    constructor() {}
+
+    get previewProduct(): IProduct | null {
+        return this.previewCard;
     }
 
-    get previewCard(): IProduct | null {
-        return this._previewCard;
-    }
-
-    set previewCard(product: IProduct | null) {
-        this._previewCard = product;
+    set previewProduct(product: IProduct | null) {
+        this.previewCard = product;
     }
 
     setProducts(products: IProduct[]): void {

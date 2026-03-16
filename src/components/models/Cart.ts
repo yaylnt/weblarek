@@ -1,13 +1,11 @@
 import { IProduct } from "../../types/index.ts";
 
 export class Cart {
-    protected cartProducts: IProduct[] | null; 
+    protected cartProducts: IProduct[] = []; 
 
-    constructor(cartProducts: IProduct[] | null) {
-        this.cartProducts = cartProducts;
-    }
+    constructor() {}
 
-    getCart(): IProduct[] | null {
+    getCart(): IProduct[] {
         return this.cartProducts;
     }
 
@@ -26,7 +24,7 @@ export class Cart {
     }
 
     clearCart(): void {
-        this.cartProducts = null;
+        this.cartProducts = [];
     }
 
     getSum(): number | null {

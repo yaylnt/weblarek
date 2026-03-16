@@ -1,17 +1,17 @@
-import { IApi, IProduct, IOrder, IOrderResponse } from "../../types/index.ts";
+import { IApi, IOrder, TOrderResponse, TProductResponse } from "../../types/index.ts";
 
 export class GetPost {
-    api: IApi;
+    protected api: IApi;
 
     constructor(api: IApi) {
         this.api = api;
     }
 
-    getCatalog() {
-        return this.api.get<IProduct[]>('/product/');
+    getCatalog(): Promise<TProductResponse> {
+        return this.api.get('/product/');
     }
 
-    createOrder(order: IOrder) {
-        return this.api.post<IOrderResponse>('/order/', order);
+    createOrder(order: IOrder): Promise<TOrderResponse> {
+        return this.api.post('/order/', order);
     }
 }
