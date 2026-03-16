@@ -58,7 +58,6 @@ const api = new Api(API_URL);
 const getPost = new GetPost(api);
 getPost.getCatalog()
     .then(products => {
-        console.log("Получение каталога через API: ", products);
         productCatalog.setProducts(products);
         console.log("Обновленный каталог: ", productCatalog.getProducts());
     })
