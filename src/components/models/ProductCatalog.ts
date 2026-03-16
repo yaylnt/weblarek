@@ -1,4 +1,5 @@
 import { IProduct } from "../../types/index.ts";
+
 export class ProductCatalog {
     protected products: IProduct[];
     protected _previewCard: IProduct | null;

@@ -22,21 +22,21 @@ const cart = new Cart(null);
 console.log("Получение содержимого корзины: ", cart.getCart());
 
 const newProduct = {
-            "id": "new-id",
-            "description": "test",
-            "image": "/test",
-            "title": "+1 час в сутках",
-            "category": "test",
-            "price": 750
-        };
+    "id": "new-id",
+    "description": "test",
+    "image": "/test",
+    "title": "+1 час в сутках",
+    "category": "test",
+    "price": 750
+};
 const secondProduct = {
-            "id": "second-id",
-            "description": "test2",
-            "image": "/test2",
-            "title": "+2 часа в сутках",
-            "category": "test",
-            "price": 1500
-        };
+    "id": "second-id",
+    "description": "test2",
+    "image": "/test2",
+    "title": "+2 часа в сутках",
+    "category": "test",
+    "price": 1500
+};
 console.log("Добавление товара в корзину: ", cart.addToCart(newProduct), cart.getCart());
 console.log("Добавление второго товара в корзину: ", cart.addToCart(secondProduct), cart.getCart());
 console.log("Удаление товара из корзины: ", cart.deleteFromCart("new-id"), cart.getCart());

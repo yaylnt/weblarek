@@ -1,6 +1,5 @@
 import { IApi, IProduct, IOrder, IOrderResponse } from "../../types/index.ts";
 
-
 export class GetPost {
     api: IApi;
 
