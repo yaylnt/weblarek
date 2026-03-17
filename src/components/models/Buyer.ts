@@ -28,8 +28,8 @@ export class Buyer {
         this.address = '';
     }
 
-    validate(): {} {
-        const validator: {[key: string]: string} = {};
+    validate(): Partial<Record<keyof IBuyer, string>> {
+        const validator: Partial<Record<keyof IBuyer, string>> = {};
 
         if (!this.payment) {
             validator.payment = "Не выбран вид оплаты";
