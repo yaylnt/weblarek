@@ -3,17 +3,17 @@
 Стек: HTML, SCSS, TS, Vite
 
 Структура проекта:
-- src/ — исходные файлы проекта
-- src/components/ — папка с JS компонентами
-- src/components/base/ — папка с базовым кодом
+- src/ - исходные файлы проекта
+- src/components/ - папка с JS компонентами
+- src/components/base/ - папка с базовым кодом
 
 Важные файлы:
-- index.html — HTML-файл главной страницы
-- src/types/index.ts — файл с типами
-- src/main.ts — точка входа приложения
-- src/scss/styles.scss — корневой файл стилей
-- src/utils/constants.ts — файл с константами
-- src/utils/utils.ts — файл с утилитами
+- index.html - HTML-файл главной страницы
+- src/types/index.ts - файл с типами
+- src/main.ts - точка входа приложения
+- src/scss/styles.scss - корневой файл стилей
+- src/utils/constants.ts - файл с константами
+- src/utils/utils.ts - файл с утилитами
 
 ## Установка и запуск
 Для установки и запуска проекта необходимо выполнить команды
@@ -41,7 +41,7 @@ npm run build
 yarn build
 ```
 # Интернет-магазин «Web-Larёk»
-«Web-Larёk» — это интернет-магазин с товарами для веб-разработчиков, где пользователи могут просматривать товары, добавлять их в корзину и оформлять заказы. Сайт предоставляет удобный интерфейс с модальными окнами для просмотра деталей товаров, управления корзиной и выбора способа оплаты, обеспечивая полный цикл покупки с отправкой заказов на сервер.
+«Web-Larёk» - это интернет-магазин с товарами для веб-разработчиков, где пользователи могут просматривать товары, добавлять их в корзину и оформлять заказы. Сайт предоставляет удобный интерфейс с модальными окнами для просмотра деталей товаров, управления корзиной и выбора способа оплаты, обеспечивая полный цикл покупки с отправкой заказов на сервер.
 
 ## Архитектура приложения
 
@@ -200,3 +200,269 @@ Presenter - презентер содержит основную логику п
 Методы класса:
 `getCatalog(): Promise<TProductResponse>` - получает каталог товаров с сервера, выполняя GET-запрос.
 `createOrder(order: IOrder): Promise<TOrderResponse>` - отправляет данные заказа на сервер методом POST.
+
+### Слой представления
+
+#### Класс Header
+
+Отвечает за отображение шапки приложения и счетчика товаров в корзине. Расширяет класс Component.
+
+Конструктор:
+`constructor(container: HTMLElement)` - конструктор принимает контейнер для иконки корзины.
+
+Поля класса:
+`basketButton: HTMLButtonElement` - кнопка перехода в корзину.
+`counterElement: HTMLElement` - элемент отображения количества товаров.
+
+Свойства класса:
+`set counter(value: number): void` - устанавливает значение счетчика товаров.
+
+#### Тип HeaderData
+
+Тип данных, с которыми работает класс Header.
+
+`counter: number` - количество товаров в корзине.
+
+
+#### Класс Gallery
+
+Отвечает за отображение списка карточек товаров на главной странице. Расширяет класс Component.
+
+Конструктор:
+`constructor(container: HTMLElement)` - конструктор принимает контейнер для галереии карточек.
+
+Поля класса:
+`catalogElement: HTMLElement` - контейнер для галереи карточек.
+
+Свойства класса:
+`set сatalog(items: HTMLElement[]): void` - устанавливает список DOM-элементов карточек.
+
+#### Тип GalleryData
+
+Тип данных, с которыми работает класс Gallery.
+
+`catalog: HTMLElement[]` - список карточек.
+
+#### Класс Modal
+
+Управляет модальным окном. Расширяет класс Component.
+
+Конструктор:
+`constructor(container: HTMLElement)` - конструктор принимает контейнер для модального окна.
+
+Поля класса:
+`closeButton: HTMLButtonElement` - кнопка закрытия.
+`contentElement: HTMLElement` - элемент для контента.
+
+Свойства класса:
+`set content(content: HTMLElement): void` - устанавливает содержимое модального окна.
+
+#### Тип ModalData
+
+Тип данных, с которыми работает класс Modal.
+
+`content: HTMLElement` - содержимое модального окна.
+
+#### Класс SuccessOrder
+
+Отображает успешное оформление заказа. Расширяет класс Component.
+
+Конструктор:
+`constructor(container: HTMLElement)` - конструктор принимает контейнер для отображения успешного заказа.
+
+Поля класса:
+`successButton: HTMLButtonElement` - кнопка подтверждения.
+`sumElement: number` - сумма заказа.
+
+Свойства класса:
+`set sum(sum: number): void` - устанавливает сумму заказа.
+
+#### Тип SuccessData
+
+Тип данных, с которыми работает класс SuccessOrder.
+
+`sum: number` - итоговая сумма заказа.
+
+#### Класс Card
+
+Базовый класс карточки товара. Расширяет класс Component.
+
+Конструктор:
+`constructor(container: HTMLElement)` - конструктор принимает контейнер для карточки товара.
+
+Поля класса:
+`nameElement: HTMLElement` - элемент названия товара.
+`priceElement: HTMLElement` - элемент цены товара.
+
+Свойства класса:
+`set name(name: string): void` - устанавливает название товара.
+`set price(value: number): void` - устанавливает цену товара.
+
+#### Тип CardData
+
+Тип данных, с которыми работает класс Card.
+
+`name: string` - название товара.
+`price: number` - цена.
+
+#### Класс CardCatalog
+
+Карточка товара в каталоге. Расширяет класс Card.
+
+Конструктор:
+`constructor(container: HTMLElement)` - конструктор принимает контейнер для карточки, отображаемой внутри каталога.
+
+Поля класса:
+`categoryElement: HTMLElement` - категория товара.
+`imageElement: HTMLImageElement` - изображение товара.
+`catalogButton: HTMLButtonElement` - кнопка, при нажатии которой открывается подробное описание товара в модальном окне.
+
+Свойства класса:
+`set category(name: string): void` - устанавливает категорию.
+`set image(src: string): void` - устанавливает изображение.
+
+#### Тип CardCatalogData
+
+Тип данных, с которыми работает класс CardCatalog.
+
+`category: string` - категория товара.
+`image: string` - ссылка на изображение.
+
+#### Класс CardPreview
+
+Карточка товара с подробным описанием, которая открыта в модальном окне. Расширяет класс Card.
+
+Конструктор:
+`constructor(container: HTMLElement)` - `конструктор принимает контейнер для карточки, открытой внутри модального окна.
+
+Поля класса:
+`imageElement: HTMLImageElement` - изображение товара.
+`categoryElement: HTMLElement` - категория товара.
+`descriptionElement: HTMLElement` - описание товара.
+`addButton: HTMLButtonElement` - кнопка добавления товара в корзину.
+
+Свойства класса:
+`set image(src: string): void` - устанавливает изображение товара.
+`set category(name: string): void` - устанавливает категорию товара.
+`set description(text: string): void` - устанавливает описание товара.
+
+#### Тип CardPreviewData
+
+Тип данных, с которыми работает класс CardPreview.
+
+`image: string` - изображение.
+`category: string` - категория.
+`description: string` - описание.
+
+#### Класс CardBasket
+
+Класс отвечает за отображение карточки товара в корзине. Расширяет класс Card.
+
+Конструктор:
+`constructor(container: HTMLElement)` - конструктор принимает контейнер для карточки в корзине.
+
+Поля класса:
+`indexElement: HTMLElement` - порядковый индекс товара.
+`deleteButton: HTMLButtonElement` - кнопка удаления товара из корзины.
+
+Свойства класса:
+`set index(number: number): void` - устанавливает порядковый номер.
+
+#### Тип CardBasketData
+
+Тип данных, с которыми работает класс CardBasket.
+
+`index: string` - индекс товара.
+
+#### Класс Basket
+
+Отвечает за отображение корзины. Расширяет класс Component.
+
+Конструктор:
+`constructor(container: HTMLElement)` - конструктор принимает контейнер для корзины.
+
+Поля класса:
+`sumElement: HTMLElement` - элемент общей суммы.
+`orderButton: HTMLButtonElement` - кнопка оформления заказа.
+`cardListElement: HTMLElement` - список товаров.
+
+Свойства класса:
+`set sum(value: number): void` - устанавливает сумму.
+`set items(items: HTMLElement[]): void` - устанавливает список товаров.
+
+#### Тип BasketData
+
+Тип данных, с которыми работает класс Basket.
+
+`sum: number` - общая сумма.
+`items: HTMLElement[]` - список товаров.
+
+#### Класс Form
+
+Базовый класс формы с валидацией. Расширяет класс Component.
+
+Конструктор:
+`constructor(container: HTMLElement)` - конструктор принимает контейнер для формы.
+
+Поля класса:
+`submitButtonElement: HTMLButtonElement` - кнопка отправки.
+`errorsElement: HTMLElement` - контейнер для ошибок.
+
+Свойства класса:
+`set errors(value: string[]): void` - отображает ошибки.
+`set isValid(value: boolean): void` - управляет валидностью формы.
+
+#### Тип FormData
+
+Тип данных, с которыми работает класс Form.
+
+`errors: string[]` - список ошибок.
+`isValid: boolean` - валидность формы.
+
+#### Класс FormOrder
+
+Форма оформления заказа с выбором типа оплаты и адресом. Расширяет класс Form.
+
+Конструктор:
+`constructor(container: HTMLElement)` - конструктор принимает контейнер для формы с даннымы о типе оплаты и адресе.
+
+Поля класса:
+`onlineButtonElement: HTMLButtonElement` - кнопка выбора онлайн оплаты.
+`cashButtonElement: HTMLButtonElement` - кнопка выбора оплаты при получении.
+`addressElement: HTMLInputElement` - поле адреса.
+
+Свойства класса:
+`set paymentMethod(value: string): void` - устанавливает способ оплаты.
+`set address(value: string): void` - устанавливает адрес.
+
+#### Тип OrderData
+
+Тип данных, с которыми работает класс FormOrder.
+
+`payment: string` - способ оплаты.
+`address: string` - адрес доставки.
+
+#### Класс FormContacts
+
+Форма контактных данных покупателя. Расширяет класс Form.
+
+Конструктор:
+`constructor(container: HTMLElement)` - конструктор принимает контейнер для формы с контактами покупателя.
+
+Поля класса:
+`emailElement: HTMLInputElement` - поле email.
+`phoneElement: HTMLInputElement` - поле телефона.
+
+Свойства класса:
+`set email(value: string): void` - устанавливает email.
+`set phone(value: string): void` - устанавливает телефон.
+
+#### Тип ContactsData
+
+Тип данных, с которыми работает класс FormContacts.
+
+`email: string` - email
+`phone: string` - телефон
+
+
+
