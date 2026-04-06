@@ -1,5 +1,7 @@
 # Проектная работа "Веб-ларек"
 
+Ссылка: https://github.com/yaylnt/weblarek.git
+
 Стек: HTML, SCSS, TS, Vite
 
 Структура проекта:
