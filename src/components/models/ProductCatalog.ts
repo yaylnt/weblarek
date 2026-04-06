@@ -1,10 +1,14 @@
 import { IProduct } from "../../types/index.ts";
+import { EventEmitter } from "../base/Events.ts";
 
 export class ProductCatalog {
     protected products: IProduct[] = [];
     protected previewCard: IProduct | null = null;
+    protected events: EventEmitter;
 
-    constructor() {}
+    constructor(events: EventEmitter) {
+        this.events = events;
+    }
 
     get previewProduct(): IProduct | null {
         return this.previewCard;
@@ -12,10 +16,12 @@ export class ProductCatalog {
 
     set previewProduct(product: IProduct | null) {
         this.previewCard = product;
+        this.events.emit('preview:change', { previewCard: product });
     }
 
     setProducts(products: IProduct[]): void {
         this.products = products;
+        this.events.emit('products:change', { products: this.products });
     }
 
     getProducts(): IProduct[] {

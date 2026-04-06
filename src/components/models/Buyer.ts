@@ -1,15 +1,20 @@
 import { IBuyer, TPayment } from "../../types/index.ts";
+import { EventEmitter } from "../base/Events.ts";
 
 export class Buyer {
     protected payment: TPayment | null = null;
     protected email: string = '';
     protected phone: string = '';
     protected address: string = '';
+    protected events: EventEmitter;
 
-    constructor() {}
+    constructor(events: EventEmitter) {
+        this.events = events;
+    }
 
     saveData(data: Partial<IBuyer>): void {
         Object.assign(this, data);
+        this.events.emit('buyer:change', { buyer: this.getData() });
     }
 
     getData(): IBuyer {
@@ -26,6 +31,7 @@ export class Buyer {
         this.email = '';
         this.phone = '';
         this.address = '';
+        this.events.emit('buyer:change', { buyer: this.getData() });
     }
 
     validate(): Partial<Record<keyof IBuyer, string>> {
