@@ -21,8 +21,12 @@ export class Basket extends Component<BasketData> {
         this.sumElement.textContent = `${value} синапсов`;
     }
 
-    set cards(items: HTMLElement[]) {
+    set items(items: HTMLElement[]) {
         this.cardListElement.innerHTML = '';
         items.forEach(item => this.cardListElement.appendChild(item));
+    }
+
+    set disableOrderButton(value: boolean) {
+        this.disable(this.orderButton, value);
     }
 }

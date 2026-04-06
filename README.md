@@ -402,7 +402,7 @@ Presenter - презентер содержит основную логику п
 Базовый класс формы с валидацией. Расширяет класс Component.
 
 Конструктор:
-`constructor(container: HTMLElement)` - конструктор принимает контейнер для формы.
+`constructor(container: HTMLFormElement)` - конструктор принимает контейнер для формы.
 
 Поля класса:
 `submitButtonElement: HTMLButtonElement` - кнопка отправки.
@@ -424,7 +424,7 @@ Presenter - презентер содержит основную логику п
 Форма оформления заказа с выбором типа оплаты и адресом. Расширяет класс Form.
 
 Конструктор:
-`constructor(container: HTMLElement)` - конструктор принимает контейнер для формы с даннымы о типе оплаты и адресе.
+`constructor(container: HTMLFormElement)` - конструктор принимает контейнер для формы с даннымы о типе оплаты и адресе.
 
 Поля класса:
 `onlineButtonElement: HTMLButtonElement` - кнопка выбора онлайн оплаты.
@@ -443,7 +443,7 @@ Presenter - презентер содержит основную логику п
 Форма контактных данных покупателя. Расширяет класс Form.
 
 Конструктор:
-`constructor(container: HTMLElement)` - конструктор принимает контейнер для формы с контактами покупателя.
+`constructor(container: HTMLFormElement)` - конструктор принимает контейнер для формы с контактами покупателя.
 
 Поля класса:
 `emailElement: HTMLInputElement` - поле email.
@@ -468,9 +468,13 @@ Presenter - презентер содержит основную логику п
 | `modal:close` | Модальное окно закрыто (пользователь нажал кнопку закрытия) | нет | `Modal.ts` |
 | `order:start` | Пользователь нажал кнопку "Оформить" в корзине | нет | `Basket.ts` |
 | `order:submit` | Пользователь отправил форму заказа (оплата и адрес) | нет | `FormOrder.ts` |
-| `order:change` | Пользователь изменил данные в форме заказа | `{ paymentMethod?: string, address?: string }` | `FormOrder.ts` |
+| `order:change` | Пользователь изменил данные в форме заказа | `{ payment?: TPayment, address?: string }` | `FormOrder.ts` |
 | `contacts:submit` | Пользователь отправил форму контактных данных | нет | `FormContacts.ts` |
 | `contacts:change` | Пользователь изменил email или телефон в форме контактов | `{ email: string, phone: string }` | `FormContacts.ts` |
 | `success:close` | Пользователь нажал кнопку "За новыми покупками!" на экране успешного оформления | нет | `SuccessOrder.ts` |
+
+### Презентер
+
+Так как приложение одностраничное, презентер описан без отдельного класса, в файле main.ts.
 
 

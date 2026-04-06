@@ -18,6 +18,10 @@ export abstract class Component<T> {
         }
     }
 
+    disable(button: HTMLButtonElement, value: boolean) {
+        button.disabled = value;
+    }
+
     // Вернуть корневой DOM-элемент
     render(data?: Partial<T>): HTMLElement {
         Object.assign(this as object, data ?? {});

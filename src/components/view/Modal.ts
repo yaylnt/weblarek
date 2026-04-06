@@ -22,12 +22,9 @@ export class Modal extends Component<ModalData> {
 
     open() {
 		this.container.classList.add('modal_active');
-		this.events.emit('modal:open');
 	}
 
 	close() {
 		this.container.classList.remove('modal_active');
-		this.contentElement.textContent = null;
-		this.events.emit('modal:close');
 	}
 }

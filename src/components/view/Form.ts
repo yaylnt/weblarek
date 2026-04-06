@@ -7,22 +7,35 @@ export class Form<T> extends Component<FormData & T> {
     protected submitButtonElement: HTMLButtonElement;
     protected errorsElement: HTMLElement;
 
-    constructor(container: HTMLElement, protected events: IEvents) {
+    constructor(container: HTMLFormElement, protected events: IEvents) {
         super(container);
-        this.submitButtonElement = ensureElement<HTMLButtonElement>('.button', container);
+        this.submitButtonElement = ensureElement<HTMLButtonElement>('button[type="submit"]', container);
         this.errorsElement = ensureElement<HTMLElement>('.form__errors', container);
     }
 
     set errors(errors: string[]) {
         this.errorsElement.innerHTML = '';
-        this.errorsElement.textContent = errors.join('\n');
+        this.errorsElement.textContent = errors.join(', ');
     }
 
     set isValid(value: boolean) {
         if (value) {
-            this.submitButtonElement.disabled = false;
+            this.disable(this.submitButtonElement, false);
         } else {
-            this.submitButtonElement.disabled = true;
+            this.disable(this.submitButtonElement, true);
         }
     }
+
+    validationState(errors: Array<string | undefined>) {
+    const actualErrors = errors.filter(Boolean) as string[];
+    this.errors = actualErrors;
+    this.isValid = actualErrors.length === 0;
+    }
+
+    clear() {
+    (this.container as HTMLFormElement).reset();
+    this.errors = [];
+    this.isValid = false;
+}
+
 }

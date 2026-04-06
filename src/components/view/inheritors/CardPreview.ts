@@ -9,6 +9,7 @@ export class CardPreview extends Card<CardPreviewData> {
     protected categoryElement: HTMLElement;
     protected descriptionElement: HTMLElement;
     protected addButton: HTMLButtonElement;
+    protected isInCart = false;
 
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
@@ -17,11 +18,19 @@ export class CardPreview extends Card<CardPreviewData> {
         this.descriptionElement = ensureElement<HTMLElement>('.card__text', container);
         this.addButton = ensureElement<HTMLButtonElement>('.card__button', container);
 
-        this.addButton.addEventListener('click', () => events.emit('card:add', { id: this._id }));
+        this.addButton.addEventListener('click', () => {
+            if (this.isInCart) {
+                this.events.emit('card:remove', { id: this._id });
+                this.inCart = false;
+            } else {
+                this.events.emit('card:add', { id: this._id });
+                this.inCart = true;
+            }
+        });
     }
 
     set image(src: string) {
-        this.setImage(this.imageElement, src, this.nameElement.textContent);
+        this.setImage(this.imageElement, src);
     }
 
     set category(category: string) {
@@ -38,5 +47,14 @@ export class CardPreview extends Card<CardPreviewData> {
         this.categoryElement.classList.remove(...modifiers);
         const modifier = categoryMap[category as keyof typeof categoryMap] ?? 'card__category_other';
         this.categoryElement.classList.add(modifier);
+    }
+
+    set inCart(value: boolean) {
+        this.isInCart = value;
+        this.addButton.textContent = value ? 'Удалить из корзины' : 'В корзину';
+    }
+
+    set disableAddButton(value: boolean) {
+        this.disable(this.addButton, value);
     }
 }
