@@ -215,7 +215,7 @@ Presenter - презентер содержит основную логику п
 `counterElement: HTMLElement` - элемент отображения количества товаров.
 
 Свойства класса:
-`set counter(value: number): void` - устанавливает значение счетчика товаров.
+`set counter(value: number)` - устанавливает значение счетчика товаров.
 
 #### Тип HeaderData
 
@@ -235,7 +235,7 @@ Presenter - презентер содержит основную логику п
 `catalogElement: HTMLElement` - контейнер для галереи карточек.
 
 Свойства класса:
-`set сatalog(items: HTMLElement[]): void` - устанавливает список DOM-элементов карточек.
+`set сatalog(items: HTMLElement[])` - устанавливает список DOM-элементов карточек.
 
 #### Тип GalleryData
 
@@ -255,7 +255,7 @@ Presenter - презентер содержит основную логику п
 `contentElement: HTMLElement` - элемент для контента.
 
 Свойства класса:
-`set content(content: HTMLElement): void` - устанавливает содержимое модального окна.
+`set content(content: HTMLElement)` - устанавливает содержимое модального окна.
 
 #### Тип ModalData
 
@@ -275,7 +275,7 @@ Presenter - презентер содержит основную логику п
 `sumElement: number` - сумма заказа.
 
 Свойства класса:
-`set sum(sum: number): void` - устанавливает сумму заказа.
+`set sum(sum: number)` - устанавливает сумму заказа.
 
 #### Тип SuccessData
 
@@ -295,8 +295,8 @@ Presenter - презентер содержит основную логику п
 `priceElement: HTMLElement` - элемент цены товара.
 
 Свойства класса:
-`set name(name: string): void` - устанавливает название товара.
-`set price(value: number): void` - устанавливает цену товара.
+`set name(name: string)` - устанавливает название товара.
+`set price(value: number)` - устанавливает цену товара.
 
 #### Тип CardData
 
@@ -318,8 +318,8 @@ Presenter - презентер содержит основную логику п
 `catalogButton: HTMLButtonElement` - кнопка, при нажатии которой открывается подробное описание товара в модальном окне.
 
 Свойства класса:
-`set category(name: string): void` - устанавливает категорию.
-`set image(src: string): void` - устанавливает изображение.
+`set category(name: string)` - устанавливает категорию.
+`set image(src: string)` - устанавливает изображение.
 
 #### Тип CardCatalogData
 
@@ -342,9 +342,9 @@ Presenter - презентер содержит основную логику п
 `addButton: HTMLButtonElement` - кнопка добавления товара в корзину.
 
 Свойства класса:
-`set image(src: string): void` - устанавливает изображение товара.
-`set category(name: string): void` - устанавливает категорию товара.
-`set description(text: string): void` - устанавливает описание товара.
+`set image(src: string)` - устанавливает изображение товара.
+`set category(name: string)` - устанавливает категорию товара.
+`set description(text: string)` - устанавливает описание товара.
 
 #### Тип CardPreviewData
 
@@ -366,7 +366,7 @@ Presenter - презентер содержит основную логику п
 `deleteButton: HTMLButtonElement` - кнопка удаления товара из корзины.
 
 Свойства класса:
-`set index(number: number): void` - устанавливает порядковый номер.
+`set index(number: number)` - устанавливает порядковый номер.
 
 #### Тип CardBasketData
 
@@ -387,8 +387,8 @@ Presenter - презентер содержит основную логику п
 `cardListElement: HTMLElement` - список товаров.
 
 Свойства класса:
-`set sum(value: number): void` - устанавливает сумму.
-`set items(items: HTMLElement[]): void` - устанавливает список товаров.
+`set sum(value: number)` - устанавливает сумму.
+`set items(items: HTMLElement[])` - устанавливает список товаров.
 
 #### Тип BasketData
 
@@ -409,8 +409,8 @@ Presenter - презентер содержит основную логику п
 `errorsElement: HTMLElement` - контейнер для ошибок.
 
 Свойства класса:
-`set errors(value: string[]): void` - отображает ошибки.
-`set isValid(value: boolean): void` - управляет валидностью формы.
+`set errors(value: string[])` - отображает ошибки.
+`set isValid(value: boolean)` - управляет валидностью формы.
 
 #### Тип FormData
 
@@ -431,10 +431,6 @@ Presenter - презентер содержит основную логику п
 `cashButtonElement: HTMLButtonElement` - кнопка выбора оплаты при получении.
 `addressElement: HTMLInputElement` - поле адреса.
 
-Свойства класса:
-`set paymentMethod(value: string): void` - устанавливает способ оплаты.
-`set address(value: string): void` - устанавливает адрес.
-
 #### Тип OrderData
 
 Тип данных, с которыми работает класс FormOrder.
@@ -453,10 +449,6 @@ Presenter - презентер содержит основную логику п
 `emailElement: HTMLInputElement` - поле email.
 `phoneElement: HTMLInputElement` - поле телефона.
 
-Свойства класса:
-`set email(value: string): void` - устанавливает email.
-`set phone(value: string): void` - устанавливает телефон.
-
 #### Тип ContactsData
 
 Тип данных, с которыми работает класс FormContacts.
@@ -464,5 +456,21 @@ Presenter - презентер содержит основную логику п
 `email: string` - email
 `phone: string` - телефон
 
+### Описание событий
+
+| События | Описание | Данные | Источник |
+|---------|----------|--------|----------|
+| `basket:click` | Пользователь нажал на иконку корзины в шапке | нет | `Header.ts` |
+| `card:select` | Пользователь нажал на карточку товара в каталоге для просмотра подробной информации | `{ id: string }` | `CardCatalog.ts` |
+| `card:add` | Пользователь нажал кнопку "В корзину" на карточке товара в модальном окне | `{ id: string }` | `CardPreview.ts` |
+| `card:remove` | Пользователь нажал кнопку удаления товара из корзины | `{ id: string }` | `CardBasket.ts` |
+| `modal:open` | Модальное окно открыто | нет | `Modal.ts` |
+| `modal:close` | Модальное окно закрыто (пользователь нажал кнопку закрытия) | нет | `Modal.ts` |
+| `order:start` | Пользователь нажал кнопку "Оформить" в корзине | нет | `Basket.ts` |
+| `order:submit` | Пользователь отправил форму заказа (оплата и адрес) | нет | `FormOrder.ts` |
+| `order:change` | Пользователь изменил данные в форме заказа | `{ paymentMethod?: string, address?: string }` | `FormOrder.ts` |
+| `contacts:submit` | Пользователь отправил форму контактных данных | нет | `FormContacts.ts` |
+| `contacts:change` | Пользователь изменил email или телефон в форме контактов | `{ email: string, phone: string }` | `FormContacts.ts` |
+| `success:close` | Пользователь нажал кнопку "За новыми покупками!" на экране успешного оформления | нет | `SuccessOrder.ts` |
 
 
