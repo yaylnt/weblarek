@@ -1,4 +1,5 @@
 import { Component } from "../base/Component";
+import { IEvents } from "../base/Events";
 import { ensureElement } from "../../utils/utils";
 import { BasketData } from "../../types";
 
@@ -7,15 +8,13 @@ export class Basket extends Component<BasketData> {
     protected orderButton: HTMLButtonElement;
     protected cardListElement: HTMLElement;
 
-    constructor(container: HTMLElement, actions?: { onOrderClick: () => void }) {
+    constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
         this.sumElement = ensureElement<HTMLElement>('.basket__price', container);
         this.orderButton = ensureElement<HTMLButtonElement>('.basket__button', container);
         this.cardListElement = ensureElement<HTMLElement>('.basket__list', container);
 
-        if (actions?.onOrderClick) {
-            this.orderButton.addEventListener('click', actions.onOrderClick);
-        }
+        this.orderButton.addEventListener('click', () => events.emit('order:start'));
     }
 
     set sum(value: number) {

@@ -1,5 +1,7 @@
 import { Card } from "../Card";
+import { IEvents } from "../../base/Events";
 import { ensureElement } from "../../../utils/utils";
+import { categoryMap } from "../../../utils/constants";
 import { CardCatalogData } from "../../../types";
 
 export class CardCatalog extends Card<CardCatalogData> {
@@ -7,15 +9,13 @@ export class CardCatalog extends Card<CardCatalogData> {
     protected categoryElement: HTMLElement;
     protected catalogButton: HTMLButtonElement;
 
-    constructor(container: HTMLElement, actions?: { onCardClick?: () => void }) {
+    constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
         this.imageElement = ensureElement<HTMLImageElement>('.card__image', container);
         this.categoryElement = ensureElement<HTMLElement>('.card__category', container);
         this.catalogButton = container as HTMLButtonElement;
 
-        if (actions?.onCardClick) {
-            this.catalogButton.addEventListener('click', actions.onCardClick);
-        }
+        this.catalogButton.addEventListener('click', () => events.emit('card:select', { id: this._id }));
     }
 
     set image(src: string) {
@@ -24,5 +24,13 @@ export class CardCatalog extends Card<CardCatalogData> {
 
     set category(category: string) {
         this.categoryElement.textContent = category;
+        this.updateCategoryModifier(category);
+    }
+
+    protected updateCategoryModifier(category: string) {
+        const modifiers = Object.values(categoryMap);
+        this.categoryElement.classList.remove(...modifiers);
+        const modifier = categoryMap[category as keyof typeof categoryMap] ?? 'card__category_other';
+        this.categoryElement.classList.add(modifier);
     }
 }

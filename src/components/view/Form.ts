@@ -1,4 +1,5 @@
 import { Component } from "../base/Component";
+import { IEvents } from "../base/Events";
 import { ensureElement } from "../../utils/utils";
 import { FormData } from "../../types";
 
@@ -6,14 +7,10 @@ export class Form<T> extends Component<FormData & T> {
     protected submitButtonElement: HTMLButtonElement;
     protected errorsElement: HTMLElement;
 
-    constructor(container: HTMLElement, actions?: { onSubmitClick: () => void }) {
+    constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
         this.submitButtonElement = ensureElement<HTMLButtonElement>('.button', container);
         this.errorsElement = ensureElement<HTMLElement>('.form__errors', container);
-
-        if (actions?.onSubmitClick) {
-            this.submitButtonElement.addEventListener('click', actions.onSubmitClick);
-        }
     }
 
     set errors(errors: string[]) {
