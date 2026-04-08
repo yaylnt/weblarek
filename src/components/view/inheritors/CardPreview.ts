@@ -9,24 +9,15 @@ export class CardPreview extends Card<CardPreviewData> {
     protected categoryElement: HTMLElement;
     protected descriptionElement: HTMLElement;
     protected addButton: HTMLButtonElement;
-    protected isInCart = false;
 
-    constructor(container: HTMLElement, protected events: IEvents) {
+    constructor(container: HTMLElement, events: IEvents) {
         super(container);
         this.imageElement = ensureElement<HTMLImageElement>('.card__image', container);
         this.categoryElement = ensureElement<HTMLElement>('.card__category', container);
         this.descriptionElement = ensureElement<HTMLElement>('.card__text', container);
         this.addButton = ensureElement<HTMLButtonElement>('.card__button', container);
 
-        this.addButton.addEventListener('click', () => {
-            if (this.isInCart) {
-                this.events.emit('card:remove', { id: this._id });
-                this.inCart = false;
-            } else {
-                this.events.emit('card:add', { id: this._id });
-                this.inCart = true;
-            }
-        });
+        this.addButton.addEventListener('click', () => {events.emit('preview:toggle')});
     }
 
     set image(src: string) {
@@ -42,16 +33,15 @@ export class CardPreview extends Card<CardPreviewData> {
         this.descriptionElement.textContent = description;
     }
 
+    set addButtonText(text: string) {
+        this.addButton.textContent = text;
+    }
+
     protected updateCategoryModifier(category: string) {
         const modifiers = Object.values(categoryMap);
         this.categoryElement.classList.remove(...modifiers);
         const modifier = categoryMap[category as keyof typeof categoryMap] ?? 'card__category_other';
         this.categoryElement.classList.add(modifier);
-    }
-
-    set inCart(value: boolean) {
-        this.isInCart = value;
-        this.addButton.textContent = value ? 'Удалить из корзины' : 'В корзину';
     }
 
     set disableAddButton(value: boolean) {
