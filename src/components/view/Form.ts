@@ -32,10 +32,4 @@ export class Form<T> extends Component<FormData & T> {
     this.isValid = actualErrors.length === 0;
     }
 
-    clear() {
-    (this.container as HTMLFormElement).reset();
-    this.errors = [];
-    this.isValid = false;
-}
-
 }
