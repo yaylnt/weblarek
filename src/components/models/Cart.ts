@@ -14,24 +14,20 @@ export class Cart {
     }
 
     addToCart(product: IProduct): void {
-        if (this.cartProducts) {
-            this.cartProducts.push(product);
-        } else {
-            this.cartProducts = [product];
-        }
-        this.events.emit('cart:change', { cart: this.cartProducts });
+        this.cartProducts.push(product);
+        this.events.emit('basket:change', { cart: this.cartProducts });
     }
 
     deleteFromCart(id: string): void {
         if (this.cartProducts) {
             this.cartProducts = this.cartProducts.filter((product) => product.id !== id);
-            this.events.emit('cart:change', { cart: this.cartProducts });
+            this.events.emit('basket:change', { cart: this.cartProducts });
         }
     }
 
     clearCart(): void {
         this.cartProducts = [];
-        this.events.emit('cart:change', { cart: this.cartProducts });
+        this.events.emit('basket:change', { cart: this.cartProducts });
     }
 
     getSum(): number | null {
