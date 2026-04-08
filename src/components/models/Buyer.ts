@@ -1,4 +1,4 @@
-import { IBuyer, TPayment } from "../../types/index.ts";
+import { ErrorsBuyer, IBuyer, TPayment } from "../../types/index.ts";
 import { EventEmitter } from "../base/Events.ts";
 
 export class Buyer {
@@ -34,8 +34,8 @@ export class Buyer {
         this.events.emit('buyer:change', { buyer: this.getData() });
     }
 
-    validate(): Partial<Record<keyof IBuyer, string>> {
-        const validator: Partial<Record<keyof IBuyer, string>> = {};
+    validate(): ErrorsBuyer {
+        const validator: ErrorsBuyer = {};
 
         if (!this.payment) {
             validator.payment = "Не выбран вид оплаты";

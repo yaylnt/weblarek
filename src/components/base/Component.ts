@@ -18,7 +18,7 @@ export abstract class Component<T> {
         }
     }
 
-    disable(button: HTMLButtonElement, value: boolean) {
+    disable(button: HTMLButtonElement, value: boolean): void {
         button.disabled = value;
     }
 

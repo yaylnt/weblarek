@@ -14,7 +14,7 @@ export class ProductCatalog {
         return this.previewCard;
     }
 
-    set previewProduct(product: IProduct | null) {
+    set previewProduct(product: IProduct) {
         this.previewCard = product;
         this.events.emit('preview:change', { previewCard: product });
     }
@@ -28,8 +28,7 @@ export class ProductCatalog {
         return this.products;
     }
 
-    getById(id: string): IProduct | null {
-        const product = this.products.find((product) => product.id === id);
-        return product || null;
+    getById(id: string): IProduct | undefined {
+        return this.products.find((product) => product.id === id);
     }
 }
