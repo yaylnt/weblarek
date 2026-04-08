@@ -16,6 +16,16 @@ export class FormContacts extends Form<ContactsData> {
             e.preventDefault();
             events.emit('contacts:submit');
         });
-        this.container.addEventListener('input', () => events.emit('contacts:change', { email: this.emailElement.value, phone: this.phoneElement.value }));
+
+        this.emailElement.addEventListener('input', () => events.emit('contacts:change', { email: this.emailElement.value }));
+        this.phoneElement.addEventListener('input', () => events.emit('contacts:change', { phone: this.phoneElement.value }));
+    }
+
+    set email(value: string) {
+         this.emailElement.value = value
+    }
+
+    set phone(value: string) {
+        this.phoneElement.value = value
     }
 }

@@ -19,22 +19,25 @@ export class FormOrder extends Form<OrderData> {
             events.emit('order:submit')});
         this.container.addEventListener('input', () => events.emit('order:change', { address: this.addressElement.value }));
 
-        this.cardButtonElement.addEventListener('click', () => {
-            events.emit('order:change', { payment: 'card' });
-            this.cardButtonElement.classList.add('button_alt-active');
-            this.cashButtonElement.classList.remove('button_alt-active');
-        });
+        this.cardButtonElement.addEventListener('click', () =>
+            events.emit('order:change', { payment: 'card' }));
 
-        this.cashButtonElement.addEventListener('click', () => {
-            events.emit('order:change', { payment: 'cash' });
-            this.cashButtonElement.classList.add('button_alt-active');
-            this.cardButtonElement.classList.remove('button_alt-active');
-        });
+        this.cashButtonElement.addEventListener('click', () =>
+            events.emit('order:change', { payment: 'cash' })        
+        );
     }
 
-    clear() {
-        super.clear();
-        this.cardButtonElement.classList.remove('button_alt-active');
-        this.cashButtonElement.classList.remove('button_alt-active');
+    set payment(value: string) {
+        if (value === 'card') {
+            this.cardButtonElement.classList.add('button_alt-active');
+            this.cashButtonElement.classList.remove('button_alt-active');;
+        } else {
+            this.cashButtonElement.classList.add('button_alt-active');
+            this.cardButtonElement.classList.remove('button_alt-active');
+        }
+    }
+
+    set address(value: string) {
+        this.addressElement.value = value;
     }
 }
