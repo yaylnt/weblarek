@@ -23,6 +23,8 @@ export interface IBuyer {
   address: string;
 }
 
+ export type ErrorsBuyer = Partial<Record<keyof IBuyer, string>>
+
 export type TProductResponse = {
   total: number;
   items: IProduct[];
@@ -70,22 +72,27 @@ export type FormData = {
 };
 
 export type CardCatalogData = {
-  id: string;
   category: string;
   image: string;
 };
 
 export type CardPreviewData = {
-  id: string;
   image: string;
   category: string;
   description: string;
 };
 
 export type CardBasketData = {
-  id: string;
   index: string;
 };
+
+export interface ICardActions {
+  onDelete: () => void;
+}
+
+export interface ICatalogActions {
+  onSelect: () => void;
+}
 
 export type OrderData = {
   payment: string;
