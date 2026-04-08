@@ -5,7 +5,6 @@ import { CardData } from "../../types";
 export class Card<T> extends Component<CardData & T> {
     protected nameElement: HTMLElement;
     protected priceElement: HTMLElement;
-    protected _id: string = '';
 
     constructor(container: HTMLElement) {
         super(container);
@@ -19,9 +18,5 @@ export class Card<T> extends Component<CardData & T> {
 
     set price(value: number) {
         this.priceElement.textContent = value ? `${value} синапсов` : 'Бесценно';
-    }
-
-    set id(value: string) {
-        this._id = value;
     }
 }
