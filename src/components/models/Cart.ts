@@ -19,10 +19,8 @@ export class Cart {
     }
 
     deleteFromCart(id: string): void {
-        if (this.cartProducts) {
-            this.cartProducts = this.cartProducts.filter((product) => product.id !== id);
-            this.events.emit('basket:change', { cart: this.cartProducts });
-        }
+        this.cartProducts = this.cartProducts.filter((product) => product.id !== id);
+        this.events.emit('basket:change', { cart: this.cartProducts });
     }
 
     clearCart(): void {
@@ -31,23 +29,14 @@ export class Cart {
     }
 
     getSum(): number | null {
-        if (this.cartProducts) {
-            return this.cartProducts.reduce((sum, product) => sum + (product.price || 0), 0);
-        }
-        return null;
+        return this.cartProducts.reduce((sum, product) => sum + (product.price || 0), 0);
     }
 
-    getAmount(): number | null {
-        if (this.cartProducts) {
-            return this.cartProducts.length;
-        }        
-        return null;
+    getAmount(): number {
+        return this.cartProducts.length;
     }
 
     checkById(id: string): boolean {
-        if (this.cartProducts) {
-            return this.cartProducts.some((product) => product.id === id);
-        }
-        return false;
+        return this.cartProducts.some((product) => product.id === id);
     }
 }
