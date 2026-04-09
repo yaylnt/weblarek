@@ -14,6 +14,8 @@ export class Basket extends Component<BasketData> {
         this.orderButton = ensureElement<HTMLButtonElement>('.basket__button', container);
         this.cardListElement = ensureElement<HTMLElement>('.basket__list', container);
 
+        this.disableOrderButton = true;
+
         this.orderButton.addEventListener('click', () => events.emit('order:start'));
     }
 
