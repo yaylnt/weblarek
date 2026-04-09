@@ -120,14 +120,13 @@ events.on('preview:toggle', () => {
             events.emit('card:remove', { id: product.id });
         }
         else {
-            events.emit('card:add', { id: product.id });
+            events.emit('card:add', product);
         }   
     }
     modal.close();
 })
 
-events.on('card:add', (data: { id: string }) => {
-    const product = productCatalog.getById(data.id);
+events.on('card:add', (product: IProduct) => {
     if (product) {
         cart.addToCart(product);
     }
