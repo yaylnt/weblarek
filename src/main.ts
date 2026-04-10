@@ -19,7 +19,7 @@ import { Basket } from './components/view/Basket';
 import { CardBasket } from './components/view/inheritors/CardBasket';
 import { FormOrder } from './components/view/inheritors/FormOrder';
 import { FormContacts } from './components/view/inheritors/FormContacts';
-import { IBuyer, IProduct, TPayment } from './types';
+import { IProduct, TPayment } from './types';
 import { SuccessOrder } from './components/view/SuccessOrder';
 
 // Брокер событий
@@ -39,10 +39,15 @@ const modal = new Modal(ensureElement<HTMLElement>('.modal'), events);
 const basket = new Basket(cloneTemplate('#basket'), events);
 const cardPreview = new CardPreview(cloneTemplate('#card-preview'), events);
 const successOrder = new SuccessOrder(cloneTemplate('#success'), events);
+const formOrder = new FormOrder(cloneTemplate('#order'), events);
+const formContacts = new FormContacts(cloneTemplate('#contacts'), events);
 
-let formState: 'order' | 'contacts' | null = null;
-let formOrder: FormOrder;
-let formContact: FormContacts;
+enum FormStateList {
+  Order = 'order',
+  Contacts = 'contacts'
+}
+
+let formState: FormStateList | null = null;
 
 const renderElements = () => cart.getCart().map((item, index) => {
     const card = new CardBasket(cloneTemplate('#card-basket'), {onDelete: () => 
@@ -138,14 +143,15 @@ events.on('card:remove', (data: { id: string }) => {
     cart.deleteFromCart(data.id);
 });
 
+// При рендере формы возвращаем в поля данные из модели на случай, если форма была случайно закрыта
 events.on('order:start', () => {
-    formState = 'order';
-    formOrder =  new FormOrder(cloneTemplate('#order'), events);
-    const currentBuyer = buyer.getData();
-    if (currentBuyer.address || currentBuyer.payment) {
-        setOrderData(currentBuyer);
-    }
-    modal.content = formOrder.render();
+    formState = FormStateList.Order;
+    modal.content = formOrder.render({
+        payment: buyer.getData().payment,
+        address: buyer.getData().address,
+        errors: '',
+        isValid: false
+    });
 });
 
 events.on('order:change', (data: Partial<{ payment: TPayment; address: string }>) => {
@@ -158,13 +164,13 @@ events.on('order:change', (data: Partial<{ payment: TPayment; address: string }>
 });
 
 events.on('order:submit', () => {
-    formState = 'contacts';
-    formContact = new FormContacts(cloneTemplate('#contacts'), events);
-    const currentBuyer = buyer.getData();
-    if (currentBuyer.email || currentBuyer.phone) {
-        setContactsData(currentBuyer);
-    }
-    modal.content = formContact.render();
+    formState = FormStateList.Contacts;
+    modal.content = formContacts.render({
+        phone: buyer.getData().phone,
+        email: buyer.getData().email,
+        errors: '',
+        isValid: false
+    });
 });
 
 events.on('contacts:change', (data: Partial<{ email: string; phone: string }>) => {
@@ -178,29 +184,22 @@ events.on('contacts:change', (data: Partial<{ email: string; phone: string }>) =
 
 events.on('buyer:change', () => {
     const currentBuyer = buyer.getData();
+    const errors = buyer.validate()
 
     if (formState === 'order') {
-        setOrderData(currentBuyer);
+        formOrder.address = currentBuyer.address;
+        formOrder.payment = currentBuyer.payment;
+        formOrder.errors = [errors.payment, errors.address].filter(Boolean).join(', '),
+        formOrder.isValid = !errors.payment && !errors.address
     }
 
     if (formState === 'contacts') {
-        setContactsData(currentBuyer);
+        formContacts.email = currentBuyer.email;
+        formContacts.phone = currentBuyer.phone;
+        formContacts.errors = [errors.email, errors.phone].filter(Boolean).join(', '),
+        formContacts.isValid = !errors.email && !errors.phone
     }
 });
-
-function setOrderData (currentBuyer: IBuyer) {
-    const errors = buyer.validate()
-    formOrder.address = currentBuyer.address;
-    formOrder.payment = currentBuyer.payment;
-    formOrder.validationState([errors.payment, errors.address]);
-}
-
-function setContactsData (currentBuyer: IBuyer) {
-    const errors = buyer.validate();
-    formContact.email = currentBuyer.email;
-    formContact.phone = currentBuyer.phone;
-    formContact.validationState([errors.email, errors.phone]);
-}
 
 events.on('contacts:submit', () => {
     getPost.createOrder({ ...buyer.getData(), items: cart.getCart().map(item => item.id), total: cart.getSum() || 0 })

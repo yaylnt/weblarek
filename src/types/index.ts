@@ -67,7 +67,7 @@ export type BasketData = {
 };
 
 export type FormData = {
-  errors: string[];
+  errors: string;
   isValid: boolean;
 };
 
@@ -95,7 +95,7 @@ export interface ICatalogActions {
 }
 
 export type OrderData = {
-  payment: string;
+  payment: TPayment | null;
   address: string;
 };
 

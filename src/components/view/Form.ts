@@ -13,22 +13,22 @@ export class Form<T> extends Component<FormData & T> {
         this.errorsElement = ensureElement<HTMLElement>('.form__errors', container);
     }
 
-    set errors(errors: string[]) {
-        this.errorsElement.innerHTML = '';
-        this.errorsElement.textContent = errors.join(', ');
+    // set errors(errors: string[]) {
+    //     this.errorsElement.innerHTML = '';
+    //     this.errorsElement.textContent = errors.join(', ');
+    // }
+
+        set errors(errors: string) {
+        this.errorsElement.textContent = errors;
     }
 
     set isValid(value: boolean) {
-        if (value) {
-            this.disable(this.submitButtonElement, false);
-        } else {
-            this.disable(this.submitButtonElement, true);
-        }
+        this.disable(this.submitButtonElement, !value);
     }
 
-    validationState(errors: Array<string | undefined>) {
-    const actualErrors = errors.filter(Boolean) as string[];
-    this.errors = actualErrors;
-    this.isValid = actualErrors.length === 0;
-    }
+    // validationState(errors: Array<string | undefined>) {
+    // const actualErrors = errors.filter(Boolean) as string[];
+    // this.errors = actualErrors;
+    // this.isValid = actualErrors.length === 0;
+    // }
 }
