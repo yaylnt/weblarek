@@ -14,7 +14,7 @@ export class Buyer {
 
     saveData(data: Partial<IBuyer>): void {
         Object.assign(this, data);
-        this.events.emit('buyer:change', { buyer: this.getData() });
+        this.events.emit('buyer:change');
     }
 
     getData(): IBuyer {
@@ -31,7 +31,7 @@ export class Buyer {
         this.email = '';
         this.phone = '';
         this.address = '';
-        this.events.emit('buyer:change', { buyer: this.getData() });
+        this.events.emit('buyer:change');
     }
 
     validate(): ErrorsBuyer {

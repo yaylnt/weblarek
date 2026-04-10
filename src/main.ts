@@ -19,7 +19,7 @@ import { Basket } from './components/view/Basket';
 import { CardBasket } from './components/view/inheritors/CardBasket';
 import { FormOrder } from './components/view/inheritors/FormOrder';
 import { FormContacts } from './components/view/inheritors/FormContacts';
-import { IProduct, TPayment } from './types';
+import { IBuyer, IProduct, TPayment } from './types';
 import { SuccessOrder } from './components/view/SuccessOrder';
 
 // Брокер событий
@@ -38,9 +38,11 @@ const gallery = new Gallery(ensureElement<HTMLElement>('.gallery'));
 const modal = new Modal(ensureElement<HTMLElement>('.modal'), events);
 const basket = new Basket(cloneTemplate('#basket'), events);
 const cardPreview = new CardPreview(cloneTemplate('#card-preview'), events);
-const formOrder = new FormOrder(cloneTemplate('#order'), events);
-const formContact = new FormContacts(cloneTemplate('#contacts'), events);
 const successOrder = new SuccessOrder(cloneTemplate('#success'), events);
+
+let formState: 'order' | 'contacts' | null = null;
+let formOrder: FormOrder;
+let formContact: FormContacts;
 
 const renderElements = () => cart.getCart().map((item, index) => {
     const card = new CardBasket(cloneTemplate('#card-basket'), {onDelete: () => 
@@ -137,6 +139,12 @@ events.on('card:remove', (data: { id: string }) => {
 });
 
 events.on('order:start', () => {
+    formState = 'order';
+    formOrder =  new FormOrder(cloneTemplate('#order'), events);
+    const currentBuyer = buyer.getData();
+    if (currentBuyer.address || currentBuyer.payment) {
+        setOrderData(currentBuyer);
+    }
     modal.content = formOrder.render();
 });
 
@@ -150,6 +158,12 @@ events.on('order:change', (data: Partial<{ payment: TPayment; address: string }>
 });
 
 events.on('order:submit', () => {
+    formState = 'contacts';
+    formContact = new FormContacts(cloneTemplate('#contacts'), events);
+    const currentBuyer = buyer.getData();
+    if (currentBuyer.email || currentBuyer.phone) {
+        setContactsData(currentBuyer);
+    }
     modal.content = formContact.render();
 });
 
@@ -164,22 +178,29 @@ events.on('contacts:change', (data: Partial<{ email: string; phone: string }>) =
 
 events.on('buyer:change', () => {
     const currentBuyer = buyer.getData();
-    const errors = buyer.validate();
 
-    if (formOrder.render().isConnected) {
-        formOrder.address = currentBuyer.address
-        if (currentBuyer.payment) {
-            formOrder.payment = currentBuyer.payment;
-        }
-        formOrder.validationState([errors.payment, errors.address]);
+    if (formState === 'order') {
+        setOrderData(currentBuyer);
     }
 
-    if (formContact.render().isConnected) {
-        formContact.email = currentBuyer.email;
-        formContact.phone = currentBuyer.phone;
-        formContact.validationState([errors.email, errors.phone]);
+    if (formState === 'contacts') {
+        setContactsData(currentBuyer);
     }
 });
+
+function setOrderData (currentBuyer: IBuyer) {
+    const errors = buyer.validate()
+    formOrder.address = currentBuyer.address;
+    formOrder.payment = currentBuyer.payment;
+    formOrder.validationState([errors.payment, errors.address]);
+}
+
+function setContactsData (currentBuyer: IBuyer) {
+    const errors = buyer.validate();
+    formContact.email = currentBuyer.email;
+    formContact.phone = currentBuyer.phone;
+    formContact.validationState([errors.email, errors.phone]);
+}
 
 events.on('contacts:submit', () => {
     getPost.createOrder({ ...buyer.getData(), items: cart.getCart().map(item => item.id), total: cart.getSum() || 0 })
@@ -187,6 +208,7 @@ events.on('contacts:submit', () => {
             modal.content = successOrder.render({ sum: response.total });
             cart.clearCart();
             buyer.clearData();
+            formState = null;
         })
         .catch(error => console.error("Ошибка при создании заказа: ", error));
 });

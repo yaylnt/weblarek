@@ -31,5 +31,4 @@ export class Form<T> extends Component<FormData & T> {
     this.errors = actualErrors;
     this.isValid = actualErrors.length === 0;
     }
-
 }
