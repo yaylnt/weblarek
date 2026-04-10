@@ -41,15 +41,15 @@ export class Buyer {
             validator.payment = "Не выбран вид оплаты";
         }
 
-        if (!this.email) {
+        if (!this.email.trim()) {
             validator.email = "Укажите email";
         }
 
-        if (!this.phone) {
+        if (!this.phone.trim()) {
             validator.phone = "Укажите номер телефона";
         }
 
-        if (!this.address) {
+        if (!this.address.trim()) {
             validator.address = "Укажите адрес доставки";
         }
 
