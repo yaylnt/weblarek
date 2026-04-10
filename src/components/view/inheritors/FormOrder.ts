@@ -27,13 +27,16 @@ export class FormOrder extends Form<OrderData> {
         );
     }
 
-    set payment(value: string) {
+    set payment(value: 'card' | 'cash' | null) {
+        this.cardButtonElement.classList.remove('button_alt-active');
+        this.cashButtonElement.classList.remove('button_alt-active');
+
         if (value === 'card') {
             this.cardButtonElement.classList.add('button_alt-active');
-            this.cashButtonElement.classList.remove('button_alt-active');;
-        } else {
+        }
+
+        if (value === 'cash') {
             this.cashButtonElement.classList.add('button_alt-active');
-            this.cardButtonElement.classList.remove('button_alt-active');
         }
     }
 
