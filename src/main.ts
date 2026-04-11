@@ -186,14 +186,14 @@ events.on('buyer:change', () => {
     const currentBuyer = buyer.getData();
     const errors = buyer.validate()
 
-    if (formState === 'order') {
+    if (formState === FormStateList.Order) {
         formOrder.address = currentBuyer.address;
         formOrder.payment = currentBuyer.payment;
         formOrder.errors = [errors.payment, errors.address].filter(Boolean).join(', '),
         formOrder.isValid = !errors.payment && !errors.address
     }
 
-    if (formState === 'contacts') {
+    if (formState === FormStateList.Contacts) {
         formContacts.email = currentBuyer.email;
         formContacts.phone = currentBuyer.phone;
         formContacts.errors = [errors.email, errors.phone].filter(Boolean).join(', '),
