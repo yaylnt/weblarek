@@ -20,7 +20,7 @@ export class CardCatalog extends Card<CardCatalogData> {
     }
 
     set image(src: string) {
-        this.setImage(this.imageElement, src, this.nameElement.textContent);
+        this.setImage(this.imageElement, src, this.nameElement.textContent ?? undefined);
     }
 
     set category(category: string) {
