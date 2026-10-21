@@ -1,407 +1,294 @@
-### Данные
-
-#### Интерфейс IProduct
-Интерфейс содержит необходимые данные каждого товара.
+**English** | [Русский](/docs/architecture.ru.md)
 
-Поля интерфейса:
-`id: string` - уникальный идентификатор товара.
-`description: string` - подробное описание товара, появляющиеся при выборе карточки.
-`image: string` - изображение для карточки товара.
-`title: string` - название товара.
-`category: string` - категория товара.
-`price: number | null` - стоимость товара. При её отсутствии товар считается "бесценным" и недоступным к покупке.
+### Data
 
-#### Интерфейс IBuyer
-Интерфейс содержит данные покупателя.
+#### IProduct Interface
 
-Поля интерфейса:
-`payment: TPayment | null` - тип оплаты, возможные варианты: 'card' | 'cash'. Если тип оплаты ещё не выбран или данные пользователя очищены - null.
-`email: string` - электронная почта.
-`phone: string` - номер телефона.
-`address: string` - адрес доставки.
+The interface contains the necessary data for each product.
 
-### Модели данных
+Interface fields: `id: string` - the unique identifier of the product. `description: string` - a detailed description of the product, shown when a card is selected. `image: string` - the image for the product card. `title: string` - the product name. `category: string` - the product category. `price: number | null` - the product price. If it is absent, the product is considered "priceless" and unavailable for purchase.
 
-#### Класс ProductCatalog
-Реализует хранение массива всех товаров, выбранной карточки товара. Даёт возможность получать и сохранять список товаров и конкретный товар.
+#### IBuyer Interface
 
-Конструктор:
-`constructor(events: EventEmitter)` - конструктор принимает экземпляр брокера событий.
+The interface contains the buyer's data.
 
-Поля класса:
-`products:IProduct[]` - массив товаров.
-`previewCard: IProduct | null` - выбранная для просмотра карточка или null, если ещё не выбрана.
+Interface fields: `payment: TPayment | null` - the payment type, possible values: 'card' | 'cash'. `null` if the payment type has not been selected yet or the user data has been cleared. `email: string` - email address. `phone: string` - phone number. `address: string` - delivery address.
 
-Свойства:
-`previewProduct: IProduct | null` - геттер и сеттер выбранной карточки товара для подробного просмотра. Позволяет установить и получить эту карточку.
+### Data Models
 
-Методы класса:
-`setProducts(products: IProduct[]): void` - сохранение массива товаров, полученного в параметрах метода.
-`getProducts(): IProduct[]` - получение массиав товаров из модели.
-`getById(id: string): IProduct | undefined` - получение одного товара по id.
+#### ProductCatalog Class
 
-#### Класс Cart
-Реализует функционал корзины: хранение выбранных товаров, добавление и удаление товаров, получение общей стоимости и количества товаров, проверка наличия товара в корзине по id.
+Stores the array of all products and the selected product card. Makes it possible to get and save the list of products and an individual product.
 
-Конструктор:
-`constructor(events: EventEmitter)` - конструктор принимает экземпляр брокера событий.
+Constructor: `constructor(events: EventEmitter)` - the constructor takes an instance of the event broker.
 
-Поля класса:
-`cartProducts: IProduct[]` - массив товаров, которые пользователь добавил в корзину.
+Class fields: `products: IProduct[]` - the array of products. `previewCard: IProduct | null` - the card selected for viewing, or `null` if none has been selected yet.
 
-Методы класса:
-`getCart(): IProduct[]` - получение массива товаров в корзине. 
-`addToCart(product: IProduct): void` - добавление товара в корзину.
-`deleteFromCart(id: string): void` - удаление товара из корзины.
-`clearCart(): void` - очистка корзины. 
-`getSum(): number | null` - получение стоимости всех товаров в корзине. 
-`getAmount(): number | null` - получение количества товаров в корзине. 
-`checkById(id: string): boolean` - проверка наличия товара в корзине по его id.
+Properties: `previewProduct: IProduct | null` - a getter and setter for the product card selected for detailed viewing. Allows setting and getting this card.
 
-#### Класс Buyer
-Работает с данными покупателя, обеспечивает их валидацию.
+Class methods: `setProducts(products: IProduct[]): void` - saves the array of products received in the method's parameters. `getProducts(): IProduct[]` - gets the array of products from the model. `getById(id: string): IProduct | undefined` - gets a single product by its id.
 
-Конструктор:
-`constructor(events: EventEmitter)` - конструктор принимает экземпляр брокера событий.
+#### Cart Class
 
-Поля класса:
-`payment: TPayment | null` - тип оплаты, возможные варианты: 'card' | 'cash'
-`email: string` - электронная почта.
-`phone: string` - номер телефона.
-`address: string` - адрес доставки.
+Implements the cart functionality: storing the selected products, adding and removing products, getting the total price and the number of products, and checking whether a product is in the cart by its id.
 
-Методы класса:
-`saveData(data: Partial<IBuyer>): void` - сохранение данных в модели.
-`getData(): IBuyer` - получение всех данных покупателя
-`clearData():  void` - очистка данных покупателя.
-`validate(): Partial<Record<keyof IBuyer, string>>` - валидация данных: поле является валидным, если оно не пустое. Если объект пуст, значит валидация пройдена успешно.
+Constructor: `constructor(events: EventEmitter)` - the constructor takes an instance of the event broker.
 
-### Слой коммуникации
+Class fields: `cartProducts: IProduct[]` - the array of products the user has added to the cart.
 
-#### Интерфейс IOrder
-Содержит данные заказа, включая данные покупателя из интерфейса IBuyer.
+Class methods: `getCart(): IProduct[]` - gets the array of products in the cart. `addToCart(product: IProduct): void` - adds a product to the cart. `deleteFromCart(id: string): void` - removes a product from the cart. `clearCart(): void` - clears the cart. `getSum(): number | null` - gets the total price of all products in the cart. `getAmount(): number | null` - gets the number of products in the cart. `checkById(id: string): boolean` - checks whether a product is in the cart by its id.
 
-Поля интерфейса:
-`payment: TPayment | null` - тип оплаты, возможные варианты: 'card' | 'cash'. Если тип оплаты ещё не выбран или данные пользователя очищены - null.
-`email: string` - электронная почта.
-`phone: string` - номер телефона.
-`address: string` - адрес доставки.
-`total: number` - общая сумма заказа. 
-`items: string[]` - массив из id товаров. 
+#### Buyer Class
 
+Works with the buyer's data and provides its validation.
 
-#### Класс GetPost
-Использует композицию, чтобы выполнить запрос на сервер с помощью метода get и будет получать с сервера объект с массивом товаров, отправляет на сервер данные о покупателе и выбранных товарах с помощью метода post. 
+Constructor: `constructor(events: EventEmitter)` - the constructor takes an instance of the event broker.
 
-Конструктор:
-`constructor(api: IApi)` - конструктор принимает объект, реализующий интерфейс IApi, и сохраняет его во внутреннем поле класса.
-Этот объект используется для выполнения всех сетевых запросов.
+Class fields: `payment: TPayment | null` - the payment type, possible values: 'card' | 'cash'. `email: string` - email address. `phone: string` - phone number. `address: string` - delivery address.
 
-Поля класса:
-`api: IApi` - объект для выполнения HTTP-запроса. 
+Class methods: `saveData(data: Partial<IBuyer>): void` - saves data in the model. `getData(): IBuyer` - gets all the buyer's data. `clearData(): void` - clears the buyer's data. `validate(): Partial<Record<keyof IBuyer, string>>` - validates the data: a field is valid if it is not empty. If the returned object is empty, validation has passed successfully.
 
-Методы класса:
-`getCatalog(): Promise<TProductResponse>` - получает каталог товаров с сервера, выполняя GET-запрос.
-`createOrder(order: IOrder): Promise<TOrderResponse>` - отправляет данные заказа на сервер методом POST.
+### Communication Layer
 
-### Слой представления
+#### IOrder Interface
 
-UML-схема
-![UML-схема слоя представления](./src/images/UML.jpg)
+Contains the order data, including the buyer data from the IBuyer interface.
 
-#### Класс Header
+Interface fields: `payment: TPayment | null` - the payment type, possible values: 'card' | 'cash'. `null` if the payment type has not been selected yet or the user data has been cleared. `email: string` - email address. `phone: string` - phone number. `address: string` - delivery address. `total: number` - the total order amount. `items: string[]` - an array of product ids.
 
-Отвечает за отображение шапки приложения и счетчика товаров в корзине. Расширяет класс Component.
+#### GetPost Class
 
-Конструктор:
-`constructor(container: HTMLElement, events: IEvents)` - конструктор принимает контейнер для иконки корзины и брокер событий.
+Uses composition to make a request to the server with the `get` method, receiving from the server an object with an array of products, and sends the buyer data and the selected products to the server with the `post` method.
 
-Поля класса:
-`basketButton: HTMLButtonElement` - кнопка перехода в корзину.
-`counterElement: HTMLElement` - элемент отображения количества товаров.
+Constructor: `constructor(api: IApi)` - the constructor takes an object implementing the IApi interface and stores it in an internal field of the class.
+This object is used to perform all network requests.
 
-Свойства класса:
-`set counter(value: number)` - устанавливает значение счетчика товаров.
+Class fields: `api: IApi` - the object used to perform HTTP requests.
 
-#### Тип HeaderData
+Class methods: `getCatalog(): Promise<TProductResponse>` - fetches the product catalog from the server by performing a GET request. `createOrder(order: IOrder): Promise<TOrderResponse>` - sends the order data to the server using POST.
 
-Тип данных, с которыми работает класс Header.
+### View Layer
 
-`counter: number` - количество товаров в корзине.
+UML diagram [![UML diagram of the view layer](https://github.com/yaylnt/weblarek/raw/main/docs/src/images/UML.jpg)](/docs/src/images/UML.jpg)
 
+#### Header Class
 
-#### Класс Gallery
+Responsible for displaying the application header and the cart item counter. Extends the Component class.
 
-Отвечает за отображение списка карточек товаров на главной странице. Расширяет класс Component.
+Constructor: `constructor(container: HTMLElement, events: IEvents)` - the constructor takes the container for the cart icon and the event broker.
 
-Конструктор:
-`constructor(container: HTMLElement)` - конструктор принимает контейнер для галереии карточек.
+Class fields: `basketButton: HTMLButtonElement` - the button for going to the cart. `counterElement: HTMLElement` - the element displaying the number of products.
 
-Поля класса:
-`catalogElement: HTMLElement` - контейнер для галереи карточек.
+Class properties: `set counter(value: number)` - sets the product counter value.
 
-Свойства класса:
-`set сatalog(items: HTMLElement[])` - устанавливает список DOM-элементов карточек.
+#### HeaderData Type
 
-#### Тип GalleryData
+The type of data the Header class works with.
 
-Тип данных, с которыми работает класс Gallery.
+`counter: number` - the number of products in the cart.
 
-`catalog: HTMLElement[]` - список карточек.
+#### Gallery Class
 
-#### Класс Modal
+Responsible for displaying the list of product cards on the main page. Extends the Component class.
 
-Управляет модальным окном. Расширяет класс Component.
+Constructor: `constructor(container: HTMLElement)` - the constructor takes the container for the card gallery.
 
-Конструктор:
-`constructor(container: HTMLElement, events: IEvents)` - конструктор принимает контейнер для модального окна и брокер событий.
+Class fields: `catalogElement: HTMLElement` - the container for the card gallery.
 
-Поля класса:
-`closeButton: HTMLButtonElement` - кнопка закрытия.
-`contentElement: HTMLElement` - элемент для контента.
+Class properties: `set catalog(items: HTMLElement[])` - sets the list of card DOM elements.
 
-Свойства класса:
-`set content(content: HTMLElement)` - устанавливает содержимое модального окна.
+#### GalleryData Type
 
-Методы класса:
-`open(): void` - открывает модальное окно.
-`close(): void` - закрывает модальное окно.
+The type of data the Gallery class works with.
 
-#### Тип ModalData
+`catalog: HTMLElement[]` - the list of cards.
 
-Тип данных, с которыми работает класс Modal.
+#### Modal Class
 
-`content: HTMLElement` - содержимое модального окна.
+Manages the modal window. Extends the Component class.
 
-#### Класс SuccessOrder
+Constructor: `constructor(container: HTMLElement, events: IEvents)` - the constructor takes the container for the modal window and the event broker.
 
-Отображает успешное оформление заказа. Расширяет класс Component.
+Class fields: `closeButton: HTMLButtonElement` - the close button. `contentElement: HTMLElement` - the element for the content.
 
-Конструктор:
-`constructor(container: HTMLElement, events: IEvents)` - конструктор принимает контейнер для отображения успешного заказа и брокер событий.
+Class properties: `set content(content: HTMLElement)` - sets the content of the modal window.
 
-Поля класса:
-`successButton: HTMLButtonElement` - кнопка подтверждения.
-`sumElement: HTMLElement` - элемент для отображения суммы заказа.
+Class methods: `open(): void` - opens the modal window. `close(): void` - closes the modal window.
 
-Свойства класса:
-`set sum(sum: number)` - устанавливает сумму заказа.
+#### ModalData Type
 
-#### Тип SuccessData
+The type of data the Modal class works with.
 
-Тип данных, с которыми работает класс SuccessOrder.
+`content: HTMLElement` - the content of the modal window.
 
-`sum: number` - итоговая сумма заказа.
+#### SuccessOrder Class
 
-#### Класс Card
+Displays a successful order confirmation. Extends the Component class.
 
-Базовый класс карточки товара. Расширяет класс Component.
+Constructor: `constructor(container: HTMLElement, events: IEvents)` - the constructor takes the container for displaying the successful order and the event broker.
 
-Конструктор:
-`constructor(container: HTMLElement)` - конструктор принимает контейнер для карточки товара.
+Class fields: `successButton: HTMLButtonElement` - the confirmation button. `sumElement: HTMLElement` - the element for displaying the order total.
 
-Поля класса:
-`nameElement: HTMLElement` - элемент названия товара.
-`priceElement: HTMLElement` - элемент цены товара.
+Class properties: `set sum(sum: number)` - sets the order total.
 
-Свойства класса:
-`set name(name: string)` - устанавливает название товара.
-`set price(value: number)` - устанавливает цену товара.
+#### SuccessData Type
 
-#### Тип CardData
+The type of data the SuccessOrder class works with.
 
-Тип данных, с которыми работает класс Card.
+`sum: number` - the final order total.
 
-`name: string` - название товара.
-`price: number` - цена.
+#### Card Class
 
-#### Класс CardCatalog
+The base class of a product card. Extends the Component class.
 
-Карточка товара в каталоге. Расширяет класс Card.
+Constructor: `constructor(container: HTMLElement)` - the constructor takes the container for the product card.
 
-Конструктор:
-`constructor(container: HTMLElement, actions?: ICatalogActions)` - конструктор принимает контейнер для карточки, отображаемой внутри каталога, и объект действий карточки.
+Class fields: `nameElement: HTMLElement` - the product name element. `priceElement: HTMLElement` - the product price element.
 
-Поля класса:
-`categoryElement: HTMLElement` - категория товара.
-`imageElement: HTMLImageElement` - изображение товара.
-`catalogButton: HTMLButtonElement` - кнопка, при нажатии которой открывается подробное описание товара в модальном окне.
+Class properties: `set name(name: string)` - sets the product name. `set price(value: number)` - sets the product price.
 
-Свойства класса:
-`set category(name: string)` - устанавливает категорию.
-`set image(src: string)` - устанавливает изображение.
+#### CardData Type
 
-#### Тип CardCatalogData
+The type of data the Card class works with.
 
-Тип данных, с которыми работает класс CardCatalog.
+`name: string` - the product name. `price: number` - the price.
 
-`category: string` - категория товара.
-`image: string` - ссылка на изображение.
+#### CardCatalog Class
 
-#### Класс CardPreview
+A product card in the catalog. Extends the Card class.
 
-Карточка товара с подробным описанием, которая открыта в модальном окне. Расширяет класс Card.
+Constructor: `constructor(container: HTMLElement, actions?: ICatalogActions)` - the constructor takes the container for the card displayed inside the catalog and an object with the card's actions.
 
-Конструктор:
-`constructor(container: HTMLElement, events: IEvents)` - конструктор принимает контейнер для карточки, открытой внутри модального окна, и брокер событий.
+Class fields: `categoryElement: HTMLElement` - the product category. `imageElement: HTMLImageElement` - the product image. `catalogButton: HTMLButtonElement` - the button that opens the detailed product description in a modal window when clicked.
 
-Поля класса:
-`imageElement: HTMLImageElement` - изображение товара.
-`categoryElement: HTMLElement` - категория товара.
-`descriptionElement: HTMLElement` - описание товара.
-`addButton: HTMLButtonElement` - кнопка добавления товара в корзину.
+Class properties: `set category(name: string)` - sets the category. `set image(src: string)` - sets the image.
 
-Свойства класса:
-`set image(src: string)` - устанавливает изображение товара.
-`set category(name: string)` - устанавливает категорию товара.
-`set description(text: string)` - устанавливает описание товара.
-`set addButtonText(text: string)` - изменяет текст кнопки покупки.
-`set disableAddButton(value: boolean)` - управляет доступностью кнопки добавления товара.
+#### CardCatalogData Type
 
-#### Тип CardPreviewData
+The type of data the CardCatalog class works with.
 
-Тип данных, с которыми работает класс CardPreview.
+`category: string` - the product category. `image: string` - the image link.
 
-`image: string` - изображение.
-`category: string` - категория.
-`description: string` - описание.
+#### CardPreview Class
 
-#### Класс CardBasket
+A product card with a detailed description, opened in a modal window. Extends the Card class.
 
-Класс отвечает за отображение карточки товара в корзине. Расширяет класс Card.
+Constructor: `constructor(container: HTMLElement, events: IEvents)` - the constructor takes the container for the card opened inside the modal window and the event broker.
 
-Конструктор:
-`constructor(container: HTMLElement, actions?: ICardActions)` - конструктор принимает контейнер для карточки в корзине и объект действий карточки.
+Class fields: `imageElement: HTMLImageElement` - the product image. `categoryElement: HTMLElement` - the product category. `descriptionElement: HTMLElement` - the product description. `addButton: HTMLButtonElement` - the button for adding the product to the cart.
 
-Поля класса:
-`indexElement: HTMLElement` - порядковый индекс товара.
-`deleteButton: HTMLButtonElement` - кнопка удаления товара из корзины.
+Class properties: `set image(src: string)` - sets the product image. `set category(name: string)` - sets the product category. `set description(text: string)` - sets the product description. `set addButtonText(text: string)` - changes the text of the buy button. `set disableAddButton(value: boolean)` - controls the availability of the add-to-cart button.
 
-Свойства класса:
-`set index(number: number)` - устанавливает порядковый номер.
+#### CardPreviewData Type
 
-#### Тип CardBasketData
+The type of data the CardPreview class works with.
 
-Тип данных, с которыми работает класс CardBasket.
+`image: string` - the image. `category: string` - the category. `description: string` - the description.
 
-`index: string` - индекс товара.
+#### CardBasket Class
 
-#### Класс Basket
+Responsible for displaying a product card in the cart. Extends the Card class.
 
-Отвечает за отображение корзины. Расширяет класс Component.
+Constructor: `constructor(container: HTMLElement, actions?: ICardActions)` - the constructor takes the container for the card in the cart and an object with the card's actions.
 
-Конструктор:
-`constructor(container: HTMLElement, events: IEvents)` - конструктор принимает контейнер для корзины и брокер событий.
+Class fields: `indexElement: HTMLElement` - the product's sequence number. `deleteButton: HTMLButtonElement` - the button for removing the product from the cart.
 
-Поля класса:
-`sumElement: HTMLElement` - элемент общей суммы.
-`orderButton: HTMLButtonElement` - кнопка оформления заказа.
-`cardListElement: HTMLElement` - список товаров.
+Class properties: `set index(number: number)` - sets the sequence number.
 
-Свойства класса:
-`set sum(value: number)` - устанавливает сумму.
-`set items(items: HTMLElement[])` - устанавливает список товаров.
-`set disableOrderButton(value: boolean)` - управляет доступностью кнопки оформления заказа.
+#### CardBasketData Type
 
-#### Тип BasketData
+The type of data the CardBasket class works with.
 
-Тип данных, с которыми работает класс Basket.
+`index: string` - the product index.
 
-`sum: number` - общая сумма.
-`items: HTMLElement[]` - список товаров.
+#### Basket Class
 
-#### Класс Form
+Responsible for displaying the cart. Extends the Component class.
 
-Базовый класс формы с валидацией. Расширяет класс Component.
+Constructor: `constructor(container: HTMLElement, events: IEvents)` - the constructor takes the container for the cart and the event broker.
 
-Конструктор:
-`constructor(container: HTMLFormElement, events: IEvents)` - конструктор принимает контейнер для формы и брокер событий.
+Class fields: `sumElement: HTMLElement` - the total amount element. `orderButton: HTMLButtonElement` - the checkout button. `cardListElement: HTMLElement` - the list of products.
 
-Поля класса:
-`submitButtonElement: HTMLButtonElement` - кнопка отправки.
-`errorsElement: HTMLElement` - контейнер для ошибок.
+Class properties: `set sum(value: number)` - sets the total. `set items(items: HTMLElement[])` - sets the list of products. `set disableOrderButton(value: boolean)` - controls the availability of the checkout button.
 
-Свойства класса:
-`set errors(value: string[])` - отображает ошибки.
-`set isValid(value: boolean)` - управляет валидностью формы.
+#### BasketData Type
 
-Методы класса:
-`validationState(errors: Array<string | undefined>): void` - фильтрует массив ошибок, отображает их и управляет состоянием кнопки отправки.
+The type of data the Basket class works with.
 
-#### Тип FormData
+`sum: number` - the total amount. `items: HTMLElement[]` - the list of products.
 
-Тип данных, с которыми работает класс Form.
+#### Form Class
 
-`errors: string[]` - список ошибок.
-`isValid: boolean` - валидность формы.
+The base class of a form with validation. Extends the Component class.
 
-#### Класс FormOrder
+Constructor: `constructor(container: HTMLFormElement, events: IEvents)` - the constructor takes the container for the form and the event broker.
 
-Форма оформления заказа с выбором типа оплаты и адресом. Расширяет класс Form.
+Class fields: `submitButtonElement: HTMLButtonElement` - the submit button. `errorsElement: HTMLElement` - the container for errors.
 
-Конструктор:
-`constructor(container: HTMLFormElement, events: IEvents)` - конструктор принимает контейнер для формы с данными о типе оплаты и адресе и брокер событий.
+Class properties: `set errors(value: string[])` - displays errors. `set isValid(value: boolean)` - controls the form's validity state.
 
-Поля класса:
-`cardButtonElement: HTMLButtonElement` - кнопка выбора оплаты картой.
-`cashButtonElement: HTMLButtonElement` - кнопка выбора оплаты при получении.
-`addressElement: HTMLInputElement` - поле адреса.
+Class methods: `validationState(errors: Array<string | undefined>): void` - filters the array of errors, displays them and controls the state of the submit button.
 
-Свойства класса:
-`set payment(value: string)` - переключает активное состояние кнопок выбора способа оплаты.
-`set address(value: string)` - устанавливает значение поля адреса.
+#### FormData Type
 
-#### Тип OrderData
+The type of data the Form class works with.
 
-Тип данных, с которыми работает класс FormOrder.
+`errors: string[]` - the list of errors. `isValid: boolean` - whether the form is valid.
 
-`payment: string` - способ оплаты.
-`address: string` - адрес доставки.
+#### FormOrder Class
 
-#### Класс FormContacts
+The checkout form with payment type selection and the address. Extends the Form class.
 
-Форма контактных данных покупателя. Расширяет класс Form.
+Constructor: `constructor(container: HTMLFormElement, events: IEvents)` - the constructor takes the container for the form with the payment type and address data and the event broker.
 
-Конструктор:
-`constructor(container: HTMLFormElement, events: IEvents)` - конструктор принимает контейнер для формы с контактами покупателя и брокер событий.
+Class fields: `cardButtonElement: HTMLButtonElement` - the button for choosing card payment. `cashButtonElement: HTMLButtonElement` - the button for choosing payment on delivery. `addressElement: HTMLInputElement` - the address field.
 
-Поля класса:
-`emailElement: HTMLInputElement` - поле email.
-`phoneElement: HTMLInputElement` - поле телефона.
+Class properties: `set payment(value: string)` - toggles the active state of the payment method buttons. `set address(value: string)` - sets the value of the address field.
 
-Свойства класса:
-`set email(value: string)` - устанавливает значение поля email.
-`set phone(value: string)` - устанавливает значение поля телефона.
+#### OrderData Type
 
-#### Тип ContactsData
+The type of data the FormOrder class works with.
 
-Тип данных, с которыми работает класс FormContacts.
+`payment: string` - the payment method. `address: string` - the delivery address.
 
-`email: string` - email
-`phone: string` - телефон
+#### FormContacts Class
 
-### Описание событий
+The form with the buyer's contact details. Extends the Form class.
 
-| События | Описание | Данные | Источник |
-|---------|----------|--------|----------|
-| `basket:click` | Пользователь нажал на иконку корзины в шапке | нет | `Header.ts` |
-| `basket:change` | Содержимое корзины изменилось: товар добавлен, удалён или корзина очищена | `{ cart: IProduct[] }` | `Cart.ts` |
-| `products:change` | Каталог товаров загружен или обновлён в модели | `{ products: IProduct[] }` | `ProductCatalog.ts` |
-| `preview:change` | Пользователь выбрал карточку товара в каталоге для открытия превью | `{ previewCard: IProduct }` | `ProductCatalog.ts` |
-| `preview:toggle` | Пользователь нажал кнопку добавления или удаления товара в превью | нет | `CardPreview.ts` |
-| `card:add` | Презентер инициировал добавление выбранного товара в корзину | `{ id: string }` | `main.ts` |
-| `card:remove` | Презентер инициировал удаление товара из корзины | `{ id: string }` | `main.ts` |
-| `modal:open` | Модальное окно открыто | нет | `main.ts` |
-| `modal:close` | Модальное окно закрыто (пользователь нажал кнопку закрытия или инициировано закрытие из презентера) | нет | `Modal.ts`, `main.ts` |
-| `order:start` | Пользователь нажал кнопку "Оформить" в корзине | нет | `Basket.ts` |
-| `order:submit` | Пользователь отправил форму заказа (оплата и адрес) | нет | `FormOrder.ts` |
-| `order:change` | Пользователь изменил данные в форме заказа | `{ payment?: TPayment, address?: string }` | `FormOrder.ts` |
-| `contacts:submit` | Пользователь отправил форму контактных данных | нет | `FormContacts.ts` |
-| `contacts:change` | Пользователь изменил email или телефон в форме контактов | `{ email?: string, phone?: string }` | `FormContacts.ts` |
-| `buyer:change` | Данные покупателя в модели изменились и требуется пересчитать состояние форм | `{ buyer: IBuyer }` | `Buyer.ts` |
-| `success:close` | Пользователь нажал кнопку "За новыми покупками!" на экране успешного оформления | нет | `SuccessOrder.ts` |
+Constructor: `constructor(container: HTMLFormElement, events: IEvents)` - the constructor takes the container for the form with the buyer's contacts and the event broker.
 
-### Презентер
+Class fields: `emailElement: HTMLInputElement` - the email field. `phoneElement: HTMLInputElement` - the phone field.
 
-Так как приложение одностраничное, презентер описан без отдельного класса, в файле main.ts.
-Он отвечает за загрузку каталога, открытие модальных окон, синхронизацию корзины, валидацию форм заказа и отправку заказа на сервер.
+Class properties: `set email(value: string)` - sets the value of the email field. `set phone(value: string)` - sets the value of the phone field.
+
+#### ContactsData Type
+
+The type of data the FormContacts class works with.
+
+`email: string` - email `phone: string` - phone
+
+### Event Descriptions
+
+| Event             | Description                                                                                          | Data                                       | Source                |
+| ----------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------ | --------------------- |
+| `basket:click`    | The user clicked the cart icon in the header                                                         | none                                       | `Header.ts`           |
+| `basket:change`   | The cart contents changed: a product was added, removed, or the cart was cleared                     | `{ cart: IProduct[] }`                     | `Cart.ts`             |
+| `products:change` | The product catalog was loaded or updated in the model                                               | `{ products: IProduct[] }`                 | `ProductCatalog.ts`   |
+| `preview:change`  | The user selected a product card in the catalog to open the preview                                  | `{ previewCard: IProduct }`                | `ProductCatalog.ts`   |
+| `preview:toggle`  | The user clicked the button for adding or removing the product in the preview                        | none                                       | `CardPreview.ts`      |
+| `card:add`        | The presenter initiated adding the selected product to the cart                                      | `{ id: string }`                           | `main.ts`             |
+| `card:remove`     | The presenter initiated removing a product from the cart                                             | `{ id: string }`                           | `main.ts`             |
+| `modal:open`      | The modal window was opened                                                                          | none                                       | `main.ts`             |
+| `modal:close`     | The modal window was closed (the user clicked the close button, or closing was initiated by the presenter) | none                                 | `Modal.ts`, `main.ts` |
+| `order:start`     | The user clicked the "Checkout" button in the cart                                                   | none                                       | `Basket.ts`           |
+| `order:submit`    | The user submitted the order form (payment and address)                                              | none                                       | `FormOrder.ts`        |
+| `order:change`    | The user changed data in the order form                                                              | `{ payment?: TPayment, address?: string }` | `FormOrder.ts`        |
+| `contacts:submit` | The user submitted the contact details form                                                          | none                                       | `FormContacts.ts`     |
+| `contacts:change` | The user changed the email or phone in the contacts form                                             | `{ email?: string, phone?: string }`       | `FormContacts.ts`     |
+| `buyer:change`    | The buyer data in the model changed and the state of the forms needs to be recalculated              | `{ buyer: IBuyer }`                        | `Buyer.ts`            |
+| `success:close`   | The user clicked the "Continue shopping!" button on the order success screen                         | none                                       | `SuccessOrder.ts`     |
+
+### Presenter
+
+Since the application is a single page, the presenter is described without a separate class, in the main.ts file.
+It is responsible for loading the catalog, opening modal windows, synchronizing the cart, validating the order forms and submitting the order to the server.

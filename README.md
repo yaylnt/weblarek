@@ -1,123 +1,131 @@
-# Интернет-магазин «Web-Larёk»
+**English** | [Русский](/README.ru.md)
 
-«Web-Larёk» - это интернет-магазин с товарами для веб-разработчиков, где пользователи могут просматривать товары, добавлять их в корзину и оформлять заказы. Сайт предоставляет удобный интерфейс с модальными окнами для просмотра деталей товаров, управления корзиной и выбора способа оплаты, обеспечивая полный цикл покупки с отправкой заказов на сервер.
+# Web-Larёk Online Store
+
+"Web-Larёk" is an online store with products for web developers, where users can browse products, add them to the cart and place orders. The site provides a convenient interface with modal windows for viewing product details, managing the cart and choosing a payment method, covering the full purchase cycle with orders sent to the server.
 
 ## 💻[Demo](https://yaylnt.github.io/weblarek/)
 
-### Стек
-<p align="center">
-  <img src="https://skillicons.dev/icons?i=ts,html,css,vite" alt="Skills" />
-</p>
+https://github.com/user-attachments/assets/36279ff8-4473-48c9-822e-d9cfcba3244a
 
+### Tech Stack
 
-## Мой вклад в проект
+[![Skills](https://skillicons.dev/icons?i=ts,html,css,vite)](https://skillicons.dev/icons?i=ts,html,css,vite)
 
-- Разработала клиентскую архитектуру приложения на **TypeScript с использованием ООП и паттерна MVP**, разделив ответственность между слоями Model, View и Presenter.
+## My Contribution
 
-- Спроектировала и реализовала **модели данных** для каталога товаров, корзины и данных покупателя с инкапсуляцией состояния, валидацией и типизированными методами работы с данными.
+- Developed the client-side architecture of the application in **TypeScript using OOP and the MVP pattern**, separating responsibilities between the Model, View and Presenter layers.
 
-- Реализовала **типобезопасную модель данных приложения** на TypeScript: интерфейсы и типы для товаров, покупателя, заказа, ответов API и View-компонентов.
+- Designed and implemented **data models** for the product catalog, the cart and the buyer data, with encapsulated state, validation and typed data-handling methods.
 
-- Реализовала **коммуникационный слой с API**: получение каталога товаров через GET-запрос и отправку заказа через POST-запрос.
+- Implemented a **type-safe data model** of the application in TypeScript: interfaces and types for products, the buyer, the order, API responses and View components.
 
-- Спроектировала и реализовала **View-слой с переиспользуемыми компонентами и наследованием**: базовые `Card` и `Form`, специализированные карточки каталога, preview и корзины, а также формы оформления заказа.
+- Implemented the **API communication layer**: fetching the product catalog via a GET request and submitting the order via a POST request.
 
-- Внедрила **событийную модель приложения** через `EventEmitter`: пользовательские действия и изменения данных передаются между слоями без жёсткой связанности компонентов.
+- Designed and implemented the **View layer with reusable components and inheritance**: the base `Card` and `Form` classes, specialized catalog, preview and cart cards, and the checkout forms.
 
-- Реализовала **Presenter**, связав модели, представления и API, и реализовала полный пользовательский сценарий: каталог → карточка товара → корзина → двухэтапное оформление → отправка заказа → экран успешного оформления.
+- Introduced an **event-driven model** of the application via `EventEmitter`: user actions and data changes are passed between layers without tightly coupling the components.
 
-- Документировала архитектуру проекта: описала модели, View-компоненты, события, коммуникационный слой и Presenter, а также подготовила UML-схему View-слоя; настроила **CI/CD и деплой на GitHub Pages**.
+- Implemented the **Presenter**, connecting the models, views and API, and built the full user flow: catalog → product card → cart → two-step checkout → order submission → order success screen.
 
-## Структура проекта
-- src/ - исходные файлы проекта
-- src/components/ - папка с JS компонентами
-- src/components/base/ - папка с базовым кодом
+- Documented the project architecture: described the models, View components, events, the communication layer and the Presenter, and prepared a UML diagram of the View layer; set up **CI/CD and deployment to GitHub Pages**.
 
-Важные файлы:
-- index.html - HTML-файл главной страницы
-- src/types/index.ts - файл с типами
-- src/main.ts - точка входа приложения
-- src/scss/styles.scss - корневой файл стилей
-- src/utils/constants.ts - файл с константами
-- src/utils/utils.ts - файл с утилитами
+## Project Structure
 
-## Установка и запуск
-Для установки и запуска проекта необходимо выполнить команды
+- src/ - project source files
+- src/components/ - folder with JS components
+- src/components/base/ - folder with base code
+
+Important files:
+
+- index.html - HTML file of the main page
+- src/types/index.ts - file with types
+- src/main.ts - application entry point
+- src/scss/styles.scss - root styles file
+- src/utils/constants.ts - file with constants
+- src/utils/utils.ts - file with utilities
+
+## Installation and Running
+
+To install and run the project, execute the following commands
 
 ```
 npm install
 npm run dev
 ```
 
-или
+or
 
 ```
 yarn
 yarn dev
 ```
-## Сборка
+
+## Build
 
 ```
 npm run build
 ```
 
-или
+or
 
 ```
 yarn build
 ```
 
-## Архитектура приложения
+## Application Architecture
 
-Код приложения разделен на слои согласно парадигме MVP (Model-View-Presenter), которая обеспечивает четкое разделение ответственности между классами слоев Model и View. Каждый слой несет свой смысл и ответственность:
+The application code is divided into layers according to the MVP (Model-View-Presenter) paradigm, which provides a clear separation of responsibilities between the classes of the Model and View layers. Each layer has its own purpose and responsibility:
 
-Model - слой данных, отвечает за хранение и изменение данных.  
-View - слой представления, отвечает за отображение данных на странице.  
-Presenter - презентер содержит основную логику приложения и  отвечает за связь представления и данных.
+Model - the data layer, responsible for storing and changing data.  
+View - the presentation layer, responsible for displaying data on the page.  
+Presenter - the presenter contains the main application logic and is responsible for connecting the view and the data.
 
-Взаимодействие между классами обеспечивается использованием событийно-ориентированного подхода. Модели и Представления генерируют события при изменении данных или взаимодействии пользователя с приложением, а Презентер обрабатывает эти события используя методы как Моделей, так и Представлений. Подробное описание слоёв, моделей, событий и View-компонентов — [в документации](./docs/architecture.md).
+Interaction between classes is based on an event-driven approach. Models and Views emit events when data changes or when the user interacts with the application, and the Presenter handles these events using the methods of both Models and Views. A detailed description of the layers, models, events and View components is available [in the documentation](https://github.com/yaylnt/weblarek/blob/main/docs/architecture.md).
 
-### Базовый код
+### Base Code
 
-#### Класс Component
-Является базовым классом для всех компонентов интерфейса.
-Класс является дженериком и принимает в переменной `T` тип данных, которые могут быть переданы в метод `render` для отображения.
+#### Component Class
 
-Конструктор:  
-`constructor(container: HTMLElement)` - принимает ссылку на DOM элемент за отображение, которого он отвечает.
+The base class for all interface components.
+The class is generic and accepts, in the type variable `T`, the type of data that can be passed to the `render` method for display.
 
-Поля класса:  
-`container: HTMLElement` - поле для хранения корневого DOM элемента компонента.
+Constructor:  
+`constructor(container: HTMLElement)` - accepts a reference to the DOM element that the component is responsible for displaying.
 
-Методы класса:  
-`render(data?: Partial<T>): HTMLElement` - Главный метод класса. Он принимает данные, которые необходимо отобразить в интерфейсе, записывает эти данные в поля класса и возвращает ссылку на DOM-элемент. Предполагается, что в классах, которые будут наследоваться от `Component` будут реализованы сеттеры для полей с данными, которые будут вызываться в момент вызова `render` и записывать данные в необходимые DOM элементы.  
-`setImage(element: HTMLImageElement, src: string, alt?: string): void` - утилитарный метод для модификации DOM-элементов `<img>`
+Class fields:  
+`container: HTMLElement` - a field for storing the component's root DOM element.
 
+Class methods:  
+`render(data?: Partial<T>): HTMLElement` - the main method of the class. It accepts the data to be displayed in the interface, writes this data into the class fields and returns a reference to the DOM element. It is assumed that classes inheriting from `Component` will implement setters for the data fields, which will be called when `render` is called and will write the data into the required DOM elements.  
+`setImage(element: HTMLImageElement, src: string, alt?: string): void` - a utility method for modifying `<img>` DOM elements
 
-#### Класс Api
-Содержит в себе базовую логику отправки запросов.
+#### Api Class
 
-Конструктор:  
-`constructor(baseUrl: string, options: RequestInit = {})` - В конструктор передается базовый адрес сервера и опциональный объект с заголовками запросов.
+Contains the base logic for sending requests.
 
-Поля класса:  
-`baseUrl: string` - базовый адрес сервера  
-`options: RequestInit` - объект с заголовками, которые будут использованы для запросов.
+Constructor:  
+`constructor(baseUrl: string, options: RequestInit = {})` - takes the base server address and an optional object with request headers.
 
-Методы:  
-`get(uri: string): Promise<object>` - выполняет GET запрос на переданный в параметрах ендпоинт и возвращает промис с объектом, которым ответил сервер  
-`post(uri: string, data: object, method: ApiPostMethods = 'POST'): Promise<object>` - принимает объект с данными, которые будут переданы в JSON в теле запроса, и отправляет эти данные на ендпоинт переданный как параметр при вызове метода. По умолчанию выполняется `POST` запрос, но метод запроса может быть переопределен заданием третьего параметра при вызове.  
-`handleResponse(response: Response): Promise<object>` - защищенный метод проверяющий ответ сервера на корректность и возвращающий объект с данными полученный от сервера или отклоненный промис, в случае некорректных данных.
+Class fields:  
+`baseUrl: string` - the base server address  
+`options: RequestInit` - an object with the headers that will be used for requests.
 
-#### Класс EventEmitter
-Брокер событий реализует паттерн "Наблюдатель", позволяющий отправлять события и подписываться на события, происходящие в системе. Класс используется для связи слоя данных и представления.
+Methods:  
+`get(uri: string): Promise<object>` - performs a GET request to the endpoint passed in the parameters and returns a promise with the object the server responded with  
+`post(uri: string, data: object, method: ApiPostMethods = 'POST'): Promise<object>` - accepts an object with data that will be sent as JSON in the request body, and sends this data to the endpoint passed as a parameter when the method is called. A `POST` request is performed by default, but the request method can be overridden by setting the third parameter on call.  
+`handleResponse(response: Response): Promise<object>` - a protected method that checks the server response for correctness and returns an object with the data received from the server, or a rejected promise in case of invalid data.
 
-Конструктор класса не принимает параметров.
+#### EventEmitter Class
 
-Поля класса:  
-`_events: Map<string | RegExp, Set<Function>>)` -  хранит коллекцию подписок на события. Ключи коллекции - названия событий или регулярное выражение, значения - коллекция функций обработчиков, которые будут вызваны при срабатывании события.
+The event broker implements the "Observer" pattern, allowing the system to emit events and subscribe to them. The class is used to connect the data layer and the presentation layer.
 
-Методы класса:  
-`on<T extends object>(event: EventName, callback: (data: T) => void): void` - подписка на событие, принимает название события и функцию обработчик.  
-`emit<T extends object>(event: string, data?: T): void` - инициализация события. При вызове события в метод передается название события и объект с данными, который будет использован как аргумент для вызова обработчика.  
-`trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void` - возвращает функцию, при вызове которой инициализируется требуемое в параметрах событие с передачей в него данных из второго параметра.
+The class constructor takes no parameters.
+
+Class fields:  
+`_events: Map<string | RegExp, Set<Function>>)` - stores the collection of event subscriptions. The keys of the collection are event names or a regular expression, and the values are collections of handler functions that will be called when the event fires.
+
+Class methods:  
+`on<T extends object>(event: EventName, callback: (data: T) => void): void` - subscribes to an event; takes the event name and a handler function.  
+`emit<T extends object>(event: string, data?: T): void` - emits an event. When called, the method receives the event name and an object with data that will be used as the argument for calling the handler.  
+`trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void` - returns a function which, when called, emits the event specified in the parameters, passing into it the data from the second parameter.
